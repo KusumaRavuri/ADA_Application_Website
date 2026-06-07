@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Admin Login — ADA Portal{% endblock %}
+{% block content %}
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="glass-card">
+      <div class="text-center mb-4">
+        <div class="brand-icon mx-auto mb-3" style="width:56px;height:56px;font-size:22px;">
+          <i class="bi bi-shield-lock-fill"></i>
+        </div>
+        <h3 class="login-title">Admin Login</h3>
+        <p class="login-subtitle">ADA Portal — Restricted Access</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for cat, msg in messages %}
+          <div class="alert-{{ cat }} mb-3">{{ msg }}</div>
+        {% endfor %}
+      {% endwith %}
+
+      <form method="POST" action="/admin/login">
+        <div class="mb-3">
+          <label class="form-label">Email Address</label>
+          <input type="email" name="email" class="form-control glass-input" placeholder="admin@portal.in" required />
+        </div>
+        <div class="mb-4">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control glass-input" placeholder="Enter password" required />
+        </div>
+        <button type="submit" class="btn-primary-glass w-100 justify-content-center">
+          <i class="bi bi-box-arrow-in-right me-2"></i>Login to Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

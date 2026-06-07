@@ -1,0 +1,50 @@
+===============================================
+  ADA APPLICATION PORTAL — SETUP GUIDE
+===============================================
+
+STEP 1: Install Python
+  Download from python.org
+  During install tick "Add Python to PATH"
+
+STEP 2: Open Command Prompt in this folder
+  Right-click the ada_portal folder
+  Select "Open in Terminal" or "Open Command Prompt here"
+
+STEP 3: Install requirements
+  pip install -r requirements.txt
+
+STEP 4: Run the app
+  python app.py
+
+STEP 5: Open browser
+  Go to: http://127.0.0.1:5000/
+
+===============================================
+  ADMIN LOGIN CREDENTIALS
+===============================================
+  URL:      http://127.0.0.1:5000/admin
+  Email:    ada.admin@portal.in
+  Password: ADA@Admin2024
+
+KEEP THESE CREDENTIALS PRIVATE.
+
+===============================================
+  TO SHARE PUBLICLY (using ngrok)
+===============================================
+  1. Download ngrok from ngrok.com
+  2. Sign up and get authtoken
+  3. Run: ngrok config add-authtoken YOUR_TOKEN
+  4. Keep "python app.py" running in one window
+  5. In another window run: ngrok http 5000
+  6. Share the https://xxxx.ngrok-free.app link
+
+===============================================
+  EXCEL FILE LOCATION
+===============================================
+  All data saves to: APPLICATION.xlsx
+  Two sheets:
+    - Applications  (44 columns, full details)
+    - Admin Summary (10 columns, summary)
+
+  Download anytime from Admin Dashboard.
+===============================================
