@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}ADA Application Portal — Home{% endblock %}
+{% block content %}
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-badge"><i class="bi bi-patch-check-fill me-2"></i>Official Internship Application Portal</div>
+    <h1 class="hero-title">Aeronautical Development<br><span class="gradient-text">Agency — ADA</span></h1>
+    <p class="hero-subtitle">Submit your internship application securely. Fill the multi-step form, upload required documents, and download your application PDF instantly.</p>
+    <div class="hero-actions">
+      <a href="/apply" class="btn-primary-glass"><i class="bi bi-pencil-square me-2"></i>Start Application</a>
+      <a href="/redownload" class="btn-secondary-glass"><i class="bi bi-download me-2"></i>Re-download PDF</a>
+      <a href="/admin" class="btn-secondary-glass"><i class="bi bi-speedometer2 me-2"></i>Admin</a>
+    </div>
+  </div>
+  <div class="container mt-5">
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-4 col-sm-6">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="bi bi-ui-checks-grid"></i></div>
+          <h5>9-Step Wizard Form</h5>
+          <p>Clean multi-step form covering Personal, Education, Family, Faculty, College, Project and Documents.</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="bi bi-file-earmark-pdf"></i></div>
+          <h5>Consolidated PDF + Undertaking</h5>
+          <p>After submission, download ONE PDF containing all your details plus the full ADA Undertaking for signing.</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="bi bi-file-earmark-spreadsheet"></i></div>
+          <h5>3-Sheet Excel Storage</h5>
+          <p>Data stored in Applicants, Family Details, and Education Details sheets — linked by Application ID.</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="bi bi-hash"></i></div>
+          <h5>Unique Application ID</h5>
+          <p>Every submission gets a unique ID like ADA202600001 — use it to track and re-download your PDF.</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="bi bi-clock-fill"></i></div>
+          <h5>Auto Timestamp</h5>
+          <p>Submission date and time are auto-recorded, stored in Excel, shown in Admin panel and PDF.</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="bi bi-image-fill"></i></div>
+          <h5>Smart File Compression</h5>
+          <p>Photos auto-compressed to ≤20KB (JPG/PNG), PDFs compressed to ≤100KB — saving storage space.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
