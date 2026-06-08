@@ -61,7 +61,7 @@ def generate_app_id():
         max_num = 0
         # App ID is in col 63 (idx 62), data starts row 3
         for row in ws.iter_rows(min_row=3, values_only=True):
-            val = row[62] if len(row) > 62 else None
+            val = row[58] if len(row) > 58 else None
             if val and str(val).startswith(f"ADA{year}"):
                 try:
                     num = int(str(val)[7:])
@@ -236,20 +236,38 @@ def _add_education_headers(wb):
 
 def _build_excel_fresh():
     """Build APPLICATION.xlsx entirely from scratch."""
+    # REMOVED cols: NICK NAME/ALIAS, TEMP PASS NUMBER, TEMP PASS VALIDITY, LETTER NO., LETTER DATED
+    # New layout (1-indexed):
+    #  1=SNo  2=Name  3=Qual  4=Branch  5=DOB  6=College  7=Semester  8=CGPA  9=Designation
+    # 10=Aadhaar  11=Gender  12=Marital  13=PermAddr  14=PresentAddr  15=PrevAddr
+    # 16=Mobile  17=IMEI  18=Landline  19=WhatsApp  20=Facebook  21=Email
+    # 22=LinkedIn  23=Instagram  24=OtherID
+    # 25=BankName  26=BankAcc  27=IFSC  28=PAN  29=EPF  30=ESIC
+    # 31=ProjectTitle  32=Guide  33=AreaOfWork  34=DurFrom  35=DurTo
+    # 36=UniversityReg
+    # 37=FamilyName  38=FamilyContact  39=FamilyRelation  40=FamilyAge  41=FamilyMarital  42=FamilyOccupation
+    # 43=ExamName  44=Board  45=YearPassing  46=Subject  47=Percentage
+    # 48–57 = blank reserved (10 cols, same as before for Prev/Foreign Employment)
+    # 58 = blank
+    # 59=APPLICATION ID  60=SubDate  61=SubTime  62=PhotoFile  63=RecLetterFile  64=GenPDF
     wb = openpyxl.Workbook()
     ws1 = wb.active; ws1.title = "Application"
-    row1_vals = ["S No","Name","Qualification B.E/B.Tech/M.E/M.Tech","Branch","DOB","College Name",
-        "Semester","CGPA","DESIGNATION","NICK NAME/ ALIES NAME","AADHAAR NUMBER","GENDER",
+    row1_vals = [
+        "S No","Name","Qualification B.E/B.Tech/M.E/M.Tech","Branch","DOB","College Name",
+        "Semester","CGPA","DESIGNATION","AADHAAR NUMBER","GENDER",
         "MARITAL STATUS","PERMANENT ADDRESS","PRESENT ADDRESS","PREVIOUS RESIDENTIAL ADDRESS",
         "CONTACT NO. MOBILE NO","IMEI NO","LANDLINE NO","WHATSAPP NO.","FACEBOOK ID","E-MAIL ID",
         "LINKEDIN ID","INSTAGRAM ID","OTHER ID. (IF ANY)","BANK NAME","BANK ACCOUNT NO.","IFSC CODE",
         "PAN NO.","EPF NO / PF NO","ESIC NO","PROJECT TITLE","GUIDE / DIRECTORATE","AREA OF WORK",
-        "DURATION FROM","DURATION TO","TEMP PASS NUMBER","TEMP PASS VALIDITY",
-        "University Student Registration No",
+        "DURATION FROM","DURATION TO",
+        "UNIVERSITY STUDENT REGISTRATION NO",
         "FAMILY NAME","FAMILY CONTACT","FAMILY RELATION","FAMILY AGE","FAMILY MARITAL","FAMILY OCCUPATION",
         "EXAM NAME","BOARD/UNIVERSITY","YEAR PASSING","SUBJECT","PERCENTAGE",
-        "LETTER NO.","LETTER DATED",
-        "APPLICATION ID","SUBMISSION DATE","SUBMISSION TIME","PHOTO FILE","REC LETTER FILE","GENERATED PDF"]
+        "","","","","", "","","","","",  # 48–57 reserved blank
+        "",                              # 58 blank
+        "APPLICATION ID","SUBMISSION DATE","SUBMISSION TIME",
+        "PHOTO FILE","REC LETTER FILE","GENERATED PDF",
+    ]
     _hdr(ws1, row1_vals, 1)
     ws1.freeze_panes = "B2"
     wb.create_sheet("Admin")
@@ -278,89 +296,70 @@ def save_to_excel(data, app_id, sub_date, sub_time, photo_name, pdf_name, gen_pd
             c.alignment = lft; c.border = bdr
             if fill: c.fill = fill
         ws.row_dimensions[rn].height = 18
-
-    # ── Sheet: Application (exact column order matching the xlsx) ──
-    # Col:  1=SNo, 2=Name, 3=Qual, 4=Branch, 5=DOB, 6=College, 7=Semester,
-    #       8=CGPA, 9=Designation, 10=Nickname(blank), 11=Aadhaar, 12=Gender,
-    #       13=Marital, 14=Perm Addr, 15=Present Addr, 16=Prev Addr,
-    #       17=Mobile, 18=IMEI, 19=Landline, 20=WhatsApp, 21=Facebook,
-    #       22=Email, 23=LinkedIn, 24=Instagram, 25=OtherID,
-    #       26=BankName, 27=BankAcc, 28=IFSC, 29=PAN, 30=EPF, 31=ESIC,
-    #       32=ProjectTitle, 33=Guide, 34=AreaOfWork,
-    #       35=DurationFrom, 36=DurationTo,
-    #       37=TempPassNo(blank), 38=TempPassValidity(blank),
-    #       39=UniversityReg,
-    #       40=FamilyName, 41=FamilyContact, 42=FamilyRelation, 43=FamilyAge,
-    #       44=FamilyMarital, 45=FamilyOccupation,
-    #       46=ExamName, 47=Board, 48=Year, 49=Subject, 50=Percentage,
-    #       51-54=PrevEmployment(blank), 55-59=ForeignEmployment(blank),
-    #       60=LetterNo(blank), 61=LetterDate(blank),
-    #       62=blank, 63=ApplicationID, 64=SubDate, 65=SubTime,
-    #       66=PhotoFile, 67=RecLetterFile, 68=GeneratedPDF
+      
     ws_app = wb["Application"]
     sno = max(0, ws_app.max_row - 2) + 1
     fill = alt1 if sno % 2 == 1 else alt2
-    app_row = [
-        sno,                            # 1  S No
-        data.get("name"),               # 2  Name
-        data.get("qualification"),      # 3  Qualification
-        data.get("btech_branch"),       # 4  Branch
-        data.get("dob"),                # 5  DOB
-        data.get("college_name"),       # 6  College
-        data.get("btech_year"),         # 7  Semester/Year
-        data.get("btech_cgpa"),         # 8  CGPA
-        data.get("designation"),        # 9  Designation
-        "",                             # 10 Nickname (removed from form, keep blank)
-        data.get("aadhaar"),            # 11 Aadhaar
-        data.get("gender"),             # 12 Gender
-        data.get("marital_status"),     # 13 Marital Status
-        data.get("permanent_address"),  # 14 Permanent Address
-        data.get("present_address"),    # 15 Present Address
-        data.get("previous_address"),   # 16 Previous Address
-        data.get("mobile"),             # 17 Mobile
-        data.get("imei"),               # 18 IMEI
-        data.get("landline"),           # 19 Landline
-        data.get("whatsapp"),           # 20 WhatsApp
-        data.get("facebook"),           # 21 Facebook
-        data.get("email"),              # 22 Email
-        data.get("linkedin"),           # 23 LinkedIn
-        data.get("instagram"),          # 24 Instagram
-        data.get("other_id"),           # 25 Other ID
-        data.get("bank_name"),          # 26 Bank Name
-        data.get("bank_account"),       # 27 Bank Account
-        data.get("ifsc"),               # 28 IFSC
-        data.get("pan"),                # 29 PAN
-        data.get("epf"),                # 30 EPF
-        data.get("esic"),               # 31 ESIC
-        data.get("project_title"),      # 32 Project Title
-        data.get("guide"),              # 33 Guide
-        data.get("area_of_work"),       # 34 Area of Work
-        data.get("duration_from"),      # 35 Duration From
-        data.get("duration_to"),        # 36 Duration To
-        "",                             # 37 Temp Pass (removed, blank)
-        "",                             # 38 Temp Validity (removed, blank)
-        data.get("university_reg"),     # 39 University Reg No
-        data.get("father_name"),        # 40 Family Name
-        data.get("father_mobile"),      # 41 Family Contact
-        "Father",                       # 42 Family Relation
-        "",                             # 43 Family Age
-        data.get("marital_status"),     # 44 Family Marital
-        data.get("father_occupation"),  # 45 Family Occupation
-        data.get("tenth_school"),       # 46 Exam Name
-        data.get("tenth_board"),        # 47 Board
-        data.get("tenth_year"),         # 48 Year
-        "",                             # 49 Subject
-        data.get("tenth_percent"),      # 50 Percentage
-        "",""  ,"","",                  # 51-54 Prev Employment (blank)
-        "","","","","",                 # 55-59 Foreign Employment (blank)
-        "","",                          # 60-61 Letter No/Date (removed, blank)
-        "",                             # 62 blank
-        app_id,                         # 63 APPLICATION ID
-        sub_date,                       # 64 Submission Date
-        sub_time,                       # 65 Submission Time
-        photo_name,                     # 66 Photo File
-        pdf_name,                       # 67 Rec Letter File
-        gen_pdf_name,                   # 68 Generated PDF
+app_row = [
+        sno,                            #  1  S No
+        data.get("name"),               #  2  Name
+        data.get("qualification"),      #  3  Qualification
+        data.get("btech_branch"),       #  4  Branch
+        data.get("dob"),                #  5  DOB
+        data.get("college_name"),       #  6  College
+        data.get("btech_year"),         #  7  Semester/Year
+        data.get("btech_cgpa"),         #  8  CGPA
+        data.get("designation"),        #  9  Designation
+        # NICK NAME removed — col 10 is now Aadhaar
+        data.get("aadhaar"),            # 10  Aadhaar
+        data.get("gender"),             # 11  Gender
+        data.get("marital_status"),     # 12  Marital Status
+        data.get("permanent_address"),  # 13  Permanent Address
+        data.get("present_address"),    # 14  Present Address
+        data.get("previous_address"),   # 15  Previous Address
+        data.get("mobile"),             # 16  Mobile
+        data.get("imei"),               # 17  IMEI
+        data.get("landline"),           # 18  Landline
+        data.get("whatsapp"),           # 19  WhatsApp
+        data.get("facebook"),           # 20  Facebook
+        data.get("email"),              # 21  Email
+        data.get("linkedin"),           # 22  LinkedIn
+        data.get("instagram"),          # 23  Instagram
+        data.get("other_id"),           # 24  Other ID
+        data.get("bank_name"),          # 25  Bank Name
+        data.get("bank_account"),       # 26  Bank Account
+        data.get("ifsc"),               # 27  IFSC
+        data.get("pan"),                # 28  PAN
+        data.get("epf"),                # 29  EPF
+        data.get("esic"),               # 30  ESIC
+        data.get("project_title"),      # 31  Project Title
+        data.get("guide"),              # 32  Guide
+        data.get("area_of_work"),       # 33  Area of Work
+        data.get("duration_from"),      # 34  Duration From
+        data.get("duration_to"),        # 35  Duration To
+        # TEMP PASS + TEMP VALIDITY removed
+        data.get("university_reg"),     # 36  University Reg No
+        data.get("father_name"),        # 37  Family Name
+        data.get("father_mobile"),      # 38  Family Contact
+        "Father",                       # 39  Family Relation
+        "",                             # 40  Family Age
+        data.get("marital_status"),     # 41  Family Marital
+        data.get("father_occupation"),  # 42  Family Occupation
+        data.get("tenth_school"),       # 43  Exam Name
+        data.get("tenth_board"),        # 44  Board
+        data.get("tenth_year"),         # 45  Year
+        "",                             # 46  Subject
+        data.get("tenth_percent"),      # 47  Percentage
+        "","","","","",                 # 48-52  Prev Employment (blank)
+        "","","","","",                 # 53-57  Foreign Employment (blank)
+        "",                             # 58  blank
+        # LETTER NO. + LETTER DATED removed
+        app_id,                         # 59  APPLICATION ID
+        sub_date,                       # 60  Submission Date
+        sub_time,                       # 61  Submission Time
+        photo_name,                     # 62  Photo File
+        pdf_name,                       # 63  Rec Letter File
+        gen_pdf_name,                   # 64  Generated PDF
     ]
     wr(ws_app, app_row, fill=fill)
 
@@ -1140,36 +1139,28 @@ def admin():
             seen_branches = set()
             # Row 1 & 2 are headers; data starts at row 3
             for row in ws.iter_rows(min_row=3, values_only=True):
-                if not row[62]:   # col 63 = APPLICATION ID (idx 62)
+                if not row[58]:   # col 63 = APPLICATION ID (idx 62)
                     continue
-            # Exact col indexes (0-based) matching save_to_excel app_row list:
-            # 0=SNo, 1=Name, 2=Qual, 3=Branch, 4=DOB, 5=College,
-            # 6=Semester, 7=CGPA, 8=Designation, 10=Aadhaar, 11=Gender,
-            # 12=Marital, 13=PermanentAddr, 14=PresentAddr, 16=Mobile,
-            # 21=Email, 22=LinkedIn, 23=Instagram, 25=BankName,
-            # 31=ProjectTitle, 34=DurationFrom, 35=DurationTo,
-            # 38=UniversityReg, 39=FatherName,
-            # 62=AppID, 63=SubDate, 64=SubTime, 65=Photo, 66=PDF, 67=GenPDF
                 a = {
-                    "App ID":        row[62],
+                    "App ID":        row[58],   # col 59
                     "Name":          row[1],
-                    "Gender":        row[11],
+                    "Gender":        row[10],   # col 11
                     "DOB":           row[4],
                     "Qualification": row[2],
                     "Branch":        row[3],
                     "College":       row[5],
                     "Semester":      row[6],
                     "CGPA":          row[7],
-                    "Email":         row[21],
-                    "Mobile":        row[16],
-                    "Aadhaar":       row[10],
-                    "Duration From": row[34],
-                    "Duration To":   row[35],
-                    "Sub Date":      row[61],
-                    "Sub Time":      row[62],
-                    "Photo File":    row[63],
-                    "PDF File":      row[64],
-                    "Gen PDF":       row[65],
+                    "Email":         row[20],   # col 21
+                    "Mobile":        row[15],   # col 16
+                    "Aadhaar":       row[9],    # col 10
+                    "Duration From": row[33],   # col 34
+                    "Duration To":   row[34],   # col 35
+                    "Sub Date":      row[59],   # col 60
+                    "Sub Time":      row[60],   # col 61
+                    "Photo File":    row[61],   # col 62
+                    "PDF File":      row[62],   # col 63
+                    "Gen PDF":       row[63],   # col 64
                 }
                 b = a["Branch"] or ""
                 if b and b not in seen_branches:
