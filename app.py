@@ -30,20 +30,20 @@ import pikepdf
 
 # ── Config ─────────────────────────────────────────────────
 app = Flask(__name__)
-app.secret_key = "ada_portal_2024_xK9#mP2"
+app.secret_key = "ada_portal_2026_xK9#mP2"
 
 BASE_DIR        = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_PDF_DIR  = os.path.join(BASE_DIR, "uploads", "pdfs")
 UPLOAD_PHO_DIR  = os.path.join(BASE_DIR, "uploads", "photos")
 UPLOAD_GEN_DIR  = os.path.join(BASE_DIR, "uploads", "generated")
-SAMPLE_DIR      = os.path.join(BASE_DIR, "uploads", "samples")
+SAMPLE_DIR      = os.path.join(BASE_DIR, "samples")
 EXCEL_PATH      = os.path.join(BASE_DIR, "APPLICATION.xlsx")
 
 ALLOWED_PDF = {"pdf"}
 ALLOWED_IMG = {"jpg", "jpeg", "png"}
 
 ADMIN_EMAIL     = "ada.admin@portal.in"
-ADMIN_PASSWORD  = "ADA@Admin2024"
+ADMIN_PASSWORD  = "ADA@Admin2026"
 ADMIN_PASS_HASH = hashlib.sha256(ADMIN_PASSWORD.encode()).hexdigest()
 
 for d in [UPLOAD_PDF_DIR, UPLOAD_PHO_DIR, UPLOAD_GEN_DIR, SAMPLE_DIR]:
