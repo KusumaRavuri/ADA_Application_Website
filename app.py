@@ -1165,11 +1165,11 @@ def admin():
                     "Aadhaar":       row[10],
                     "Duration From": row[34],
                     "Duration To":   row[35],
-                    "Sub Date":      row[63],
-                    "Sub Time":      row[64],
-                    "Photo File":    row[65],
-                    "PDF File":      row[66],
-                    "Gen PDF":       row[67],
+                    "Sub Date":      row[61],
+                    "Sub Time":      row[62],
+                    "Photo File":    row[63],
+                    "PDF File":      row[64],
+                    "Gen PDF":       row[65],
                 }
                 b = a["Branch"] or ""
                 if b and b not in seen_branches:
