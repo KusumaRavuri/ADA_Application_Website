@@ -47,10 +47,38 @@
               <select class="form-select glass-input" name="gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select>
             </div>
             <div class="col-md-3"><label class="form-label">Date of Birth <span class="req">*</span></label><input type="date" class="form-control glass-input" name="dob" required/></div>
-            <div class="col-md-6"><label class="form-label">Aadhaar Number <span class="req">*</span></label><input type="text" class="form-control glass-input" name="aadhaar" maxlength="14" placeholder="XXXX XXXX XXXX" required/></div>
-            <div class="col-md-6"><label class="form-label">Mobile Number <span class="req">*</span></label><input type="tel" class="form-control glass-input" name="mobile" placeholder="+91 XXXXXXXXXX" required/></div>
-            <div class="col-md-6"><label class="form-label">E-Mail ID <span class="req">*</span></label><input type="email" class="form-control glass-input" name="email" placeholder="you@example.com" required/></div>
-            <div class="col-md-6"><label class="form-label">WhatsApp No.</label><input type="tel" class="form-control glass-input" name="whatsapp" placeholder="+91 XXXXXXXXXX"/></div>
+            <div class="col-md-6"><label class="form-label">Aadhaar Number <span class="req">*</span></label><input type="text" class="form-control glass-input" name="aadhaar"
+                    id="aadhaarInput"
+                    maxlength="14"
+                    placeholder="XXXX XXXX XXXX"
+                    pattern="\d{4}\s\d{4}\s\d{4}"
+                    title="Enter 12-digit Aadhaar as XXXX XXXX XXXX"
+                    inputmode="numeric"
+                    required/></div>
+            <div class="field-error" id="err_aadhaar"></div>
+            <div class="col-md-6"><label class="form-label">Mobile Number <span class="req">*</span></label><input type="tel" class="form-control glass-input" name="mobile"
+                      id="mobileInput"
+                      placeholder="+91 XXXXXXXXXX"
+                      pattern="(\+91[\-\s]?)?[6-9]\d{9}"
+                      title="Enter a valid 10-digit Indian mobile number (optionally starting with +91)"
+                      inputmode="numeric"
+                      maxlength="14"
+                      required/></div>
+            <div class="field-error" id="err_mobile"></div>
+            <div class="col-md-6"><label class="form-label">E-Mail ID <span class="req">*</span></label><input type="email" class="form-control glass-input" name="email"
+                      id="emailInput"
+                      placeholder="you@example.com"
+                      title="Enter a valid email address (must contain @)"
+                      required/></div>
+            <div class="field-error" id="err_email"></div>
+            <div class="col-md-6"><label class="form-label">WhatsApp No.</label><input type="tel" class="form-control glass-input" name="whatsapp"
+                    id="whatsappInput"
+                    placeholder="+91 XXXXXXXXXX"
+                    pattern="(\+91[\-\s]?)?[6-9]\d{9}"
+                    title="Enter a valid 10-digit Indian mobile number"
+                    inputmode="numeric"
+                    maxlength="14"/></div>
+            <div class="field-error" id="err_whatsapp"></div>
             <div class="col-12"><label class="form-label">Permanent Address <span class="req">*</span></label><textarea class="form-control glass-input" name="permanent_address" rows="2" placeholder="Full permanent address" required></textarea></div>
             <div class="col-12"><label class="form-label">Present Address (Bangalore) <span class="req">*</span></label><textarea class="form-control glass-input" name="present_address" rows="2" placeholder="Current residential address in Bangalore" required></textarea></div>
             <div class="col-12"><label class="form-label">Previous Residential Address</label><textarea class="form-control glass-input" name="previous_address" rows="2" placeholder="Previous address (if applicable)"></textarea></div>
@@ -64,9 +92,30 @@
               <select class="form-select glass-input" name="marital_status"><option value="">Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select>
             </div>
             <div class="col-md-4"><label class="form-label">Designation</label><input type="text" class="form-control glass-input" name="designation" placeholder="e.g. Student Intern"/></div>
-            <div class="col-md-4"><label class="form-label">Landline No.</label><input type="tel" class="form-control glass-input" name="landline" placeholder="STD Code + Number"/></div>
-            <div class="col-md-4"><label class="form-label">IMEI No.</label><input type="text" class="form-control glass-input" name="imei" placeholder="15-digit IMEI" maxlength="15"/></div>
-            <div class="col-md-4"><label class="form-label">PAN No.</label><input type="text" class="form-control glass-input" name="pan" maxlength="10" placeholder="ABCDE1234F"/></div>
+            <div class="col-md-4"><label class="form-label">Landline No.</label><input type="tel" class="form-control glass-input" name="landline"
+                      id="landlineInput"
+                      placeholder="e.g. 08012345678"
+                      pattern="\d{6,12}"
+                      title="Enter STD code followed by number (6–12 digits, no spaces)"
+                      inputmode="numeric"
+                      maxlength="12"/></div>
+            <div class="field-error" id="err_landline"></div>
+            <div class="col-md-4"><label class="form-label">IMEI No.</label><input type="text" class="form-control glass-input" name="imei"
+                      id="imeiInput"
+                      placeholder="15-digit IMEI"
+                      pattern="\d{15}"
+                      title="IMEI must be exactly 15 digits"
+                      inputmode="numeric"
+                      maxlength="15"/></div>
+            <div class="field-error" id="err_imei"></div>
+            <div class="col-md-4"><label class="form-label">PAN No.</label><input type="text" class="form-control glass-input" name="pan"
+                      id="panInput"
+                      maxlength="10"
+                      placeholder="ABCDE1234F"
+                      pattern="[A-Z]{5}[0-9]{4}[A-Z]"
+                      title="PAN format: 5 uppercase letters, 4 digits, 1 uppercase letter (e.g. ABCDE1234F)"
+                      style="text-transform:uppercase"/></div>
+            <div class="field-error" id="err_pan"></div>
             <div class="col-md-6"><label class="form-label">Facebook ID</label><input type="text" class="form-control glass-input" name="facebook" placeholder="facebook.com/username"/></div>
             <div class="col-md-6"><label class="form-label">LinkedIn ID</label><input type="text" class="form-control glass-input" name="linkedin" placeholder="linkedin.com/in/username"/></div>
             <div class="col-md-6"><label class="form-label">Instagram ID</label><input type="text" class="form-control glass-input" name="instagram" placeholder="@username"/></div>
