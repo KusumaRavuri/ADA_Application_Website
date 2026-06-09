@@ -18,9 +18,10 @@
           ("4","Faculty","person-badge-fill"),
           ("5","College","building"),
           ("6","Project","briefcase-fill"),
-          ("7","Documents","file-earmark-arrow-up-fill"),
-          ("8","Declaration","check-circle-fill"),
-          ("9","Review","eye-fill")
+          ("7","Employment","person-workspace"),
+          ("8","Documents","file-earmark-arrow-up-fill"),
+          ("9","Declaration","check-circle-fill"),
+          ("10","Review","eye-fill")
         ] %}
         {% for num,label,icon in steps %}
         <div class="prog-step {% if loop.first %}active{% endif %}" data-step="{{ num }}">
@@ -145,7 +146,7 @@
                   <th style="width:18%">Level</th>
                   <th style="width:28%">School / Institution</th>
                   <th style="width:20%">Board / University</th>
-                  <th style="width:12%">Year</th>
+                  <th style="width:12%">Year of passing</th>
                   <th style="width:16%">Percentage / CGPA</th>
                 </tr>
               </thead>
@@ -168,7 +169,7 @@
                   <td><span class="edu-level-badge">B.Tech / Degree</span></td>
                   <td><input type="text" class="form-control glass-input-sm" name="btech_college" placeholder="College name" required/></td>
                   <td><input type="text" class="form-control glass-input-sm" name="btech_branch" placeholder="Branch / CSE" required/></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="btech_year" placeholder="4th yr / 7th sem"/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="btech_year" placeholder="2027"/></td>
                   <td><input type="text" class="form-control glass-input-sm" name="btech_cgpa" placeholder="8.5 CGPA"/></td>
                 </tr>
               </tbody>
@@ -293,8 +294,74 @@
         </div>
       </div>
 
-      <!-- STEP 7: Documents -->
+
+      <!-- STEP 7: Employment Details -->
       <div class="form-step" id="step7">
+        <div class="glass-card">
+          <div class="card-section-header"><i class="bi bi-person-workspace"></i> Employment Details</div>
+          <p class="small mb-3" style="color:var(--text-muted);">Leave blank if not applicable.</p>
+      
+          <!-- Previous Employment -->
+          <div class="card-section-header mt-1 mb-2" style="font-size:.85rem;background:var(--blue-100);color:var(--blue-700);border-radius:8px;padding:8px 14px;">
+            <i class="bi bi-building-fill-check me-2"></i>Previous Employment Details
+          </div>
+          <div class="faculty-table-wrapper">
+            <table class="faculty-info-table">
+              <tbody>
+                <tr>
+                  <th>Company Name</th>
+                  <td><input type="text" class="form-control glass-input" name="prev_emp_company" placeholder="Previous employer name"/></td>
+                </tr>
+                <tr>
+                  <th>From</th>
+                  <td><input type="date" class="form-control glass-input" name="prev_emp_from"/></td>
+                </tr>
+                <tr>
+                  <th>To</th>
+                  <td><input type="date" class="form-control glass-input" name="prev_emp_to"/></td>
+                </tr>
+                <tr>
+                  <th>Categories of Work</th>
+                  <td><input type="text" class="form-control glass-input" name="prev_emp_categories" placeholder="e.g. Software Development, Research"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      
+          <!-- Foreign Employment -->
+          <div class="card-section-header mt-3 mb-2" style="font-size:.85rem;background:var(--blue-100);color:var(--blue-700);border-radius:8px;padding:8px 14px;">
+            <i class="bi bi-globe2 me-2"></i>Foreign Employment Details (Self / Family Members / Relatives)
+          </div>
+          <div class="faculty-table-wrapper">
+            <table class="faculty-info-table">
+              <tbody>
+                <tr>
+                  <th>Name</th>
+                  <td><input type="text" class="form-control glass-input" name="foreign_name" placeholder="Name of person employed abroad"/></td>
+                </tr>
+                <tr>
+                  <th>Relation</th>
+                  <td><input type="text" class="form-control glass-input" name="foreign_relation" placeholder="e.g. Self, Brother, Spouse"/></td>
+                </tr>
+                <tr>
+                  <th>Job / Designation</th>
+                  <td><input type="text" class="form-control glass-input" name="foreign_job" placeholder="Job title or designation"/></td>
+                </tr>
+                <tr>
+                  <th>Country</th>
+                  <td><input type="text" class="form-control glass-input" name="foreign_country" placeholder="Country of employment"/></td>
+                </tr>
+                <tr>
+                  <th>Duration</th>
+                  <td><input type="text" class="form-control glass-input" name="foreign_duration" placeholder="e.g. 2 years, Jan 2022 – Dec 2023"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- STEP 7: Documents -->
+      <div class="form-step" id="step8">
         <div class="glass-card">
           <div class="card-section-header"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Documents</div>
 
@@ -339,7 +406,7 @@
       </div>
 
       <!-- STEP 8: Declaration -->
-      <div class="form-step" id="step8">
+      <div class="form-step" id="step9">
         <div class="glass-card">
           <div class="card-section-header"><i class="bi bi-check-circle-fill"></i> Undertaking Declaration</div>
           <div class="undertaking-scroll">
@@ -369,7 +436,7 @@
       </div>
 
       <!-- STEP 9: Review & Submit -->
-      <div class="form-step" id="step9">
+      <div class="form-step" id="step10">
         <div class="glass-card">
           <div class="card-section-header"><i class="bi bi-eye-fill"></i> Final Review &amp; Submit</div>
           <p style="color:var(--text-light);" class="mb-4">Please review your details before final submission. Use Previous to make any corrections.</p>
