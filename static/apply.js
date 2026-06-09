@@ -253,7 +253,7 @@ function showToast(msg,type="danger") {
 function changeStep(dir) {
   const next = currentStep+dir;
   // Inside changeStep(direction), at the very top:
-  if (direction === 1 && currentStep === 1) {
+  if (dir === 1 && currentStep === 1) {
     if (!validateAllFields()) {
       // Scroll to first error
       const firstErr = document.querySelector(".glass-input.is-invalid");
