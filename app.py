@@ -300,66 +300,66 @@ def save_to_excel(data, app_id, sub_date, sub_time, photo_name, pdf_name, gen_pd
     ws_app = wb["Application"]
     sno = max(0, ws_app.max_row - 2) + 1
     fill = alt1 if sno % 2 == 1 else alt2
-app_row = [
-        sno,                            #  1  S No
-        data.get("name"),               #  2  Name
-        data.get("qualification"),      #  3  Qualification
-        data.get("btech_branch"),       #  4  Branch
-        data.get("dob"),                #  5  DOB
-        data.get("college_name"),       #  6  College
-        data.get("btech_year"),         #  7  Semester/Year
-        data.get("btech_cgpa"),         #  8  CGPA
-        data.get("designation"),        #  9  Designation
-        # NICK NAME removed — col 10 is now Aadhaar
-        data.get("aadhaar"),            # 10  Aadhaar
-        data.get("gender"),             # 11  Gender
-        data.get("marital_status"),     # 12  Marital Status
-        data.get("permanent_address"),  # 13  Permanent Address
-        data.get("present_address"),    # 14  Present Address
-        data.get("previous_address"),   # 15  Previous Address
-        data.get("mobile"),             # 16  Mobile
-        data.get("imei"),               # 17  IMEI
-        data.get("landline"),           # 18  Landline
-        data.get("whatsapp"),           # 19  WhatsApp
-        data.get("facebook"),           # 20  Facebook
-        data.get("email"),              # 21  Email
-        data.get("linkedin"),           # 22  LinkedIn
-        data.get("instagram"),          # 23  Instagram
-        data.get("other_id"),           # 24  Other ID
-        data.get("bank_name"),          # 25  Bank Name
-        data.get("bank_account"),       # 26  Bank Account
-        data.get("ifsc"),               # 27  IFSC
-        data.get("pan"),                # 28  PAN
-        data.get("epf"),                # 29  EPF
-        data.get("esic"),               # 30  ESIC
-        data.get("project_title"),      # 31  Project Title
-        data.get("guide"),              # 32  Guide
-        data.get("area_of_work"),       # 33  Area of Work
-        data.get("duration_from"),      # 34  Duration From
-        data.get("duration_to"),        # 35  Duration To
-        # TEMP PASS + TEMP VALIDITY removed
-        data.get("university_reg"),     # 36  University Reg No
-        data.get("father_name"),        # 37  Family Name
-        data.get("father_mobile"),      # 38  Family Contact
-        "Father",                       # 39  Family Relation
-        "",                             # 40  Family Age
-        data.get("marital_status"),     # 41  Family Marital
-        data.get("father_occupation"),  # 42  Family Occupation
-        data.get("tenth_school"),       # 43  Exam Name
-        data.get("tenth_board"),        # 44  Board
-        data.get("tenth_year"),         # 45  Year
-        "",                             # 46  Subject
-        data.get("tenth_percent"),      # 47  Percentage
-        "","","","","",                 # 48-52  Prev Employment (blank)
-        "","","","","",                 # 53-57  Foreign Employment (blank)
-        "",                             # 58  blank
-        # LETTER NO. + LETTER DATED removed
-        app_id,                         # 59  APPLICATION ID
-        sub_date,                       # 60  Submission Date
-        sub_time,                       # 61  Submission Time
-        photo_name,                     # 62  Photo File
-        pdf_name,                       # 63  Rec Letter File
-        gen_pdf_name,                   # 64  Generated PDF
+    app_row = [
+            sno,                            #  1  S No
+            data.get("name"),               #  2  Name
+            data.get("qualification"),      #  3  Qualification
+            data.get("btech_branch"),       #  4  Branch
+            data.get("dob"),                #  5  DOB
+            data.get("college_name"),       #  6  College
+            data.get("btech_year"),         #  7  Semester/Year
+            data.get("btech_cgpa"),         #  8  CGPA
+            data.get("designation"),        #  9  Designation
+            # NICK NAME removed — col 10 is now Aadhaar
+            data.get("aadhaar"),            # 10  Aadhaar
+            data.get("gender"),             # 11  Gender
+            data.get("marital_status"),     # 12  Marital Status
+            data.get("permanent_address"),  # 13  Permanent Address
+            data.get("present_address"),    # 14  Present Address
+            data.get("previous_address"),   # 15  Previous Address
+            data.get("mobile"),             # 16  Mobile
+            data.get("imei"),               # 17  IMEI
+            data.get("landline"),           # 18  Landline
+            data.get("whatsapp"),           # 19  WhatsApp
+            data.get("facebook"),           # 20  Facebook
+            data.get("email"),              # 21  Email
+            data.get("linkedin"),           # 22  LinkedIn
+            data.get("instagram"),          # 23  Instagram
+            data.get("other_id"),           # 24  Other ID
+            data.get("bank_name"),          # 25  Bank Name
+            data.get("bank_account"),       # 26  Bank Account
+            data.get("ifsc"),               # 27  IFSC
+            data.get("pan"),                # 28  PAN
+            data.get("epf"),                # 29  EPF
+            data.get("esic"),               # 30  ESIC
+            data.get("project_title"),      # 31  Project Title
+            data.get("guide"),              # 32  Guide
+            data.get("area_of_work"),       # 33  Area of Work
+            data.get("duration_from"),      # 34  Duration From
+            data.get("duration_to"),        # 35  Duration To
+            # TEMP PASS + TEMP VALIDITY removed
+            data.get("university_reg"),     # 36  University Reg No
+            data.get("father_name"),        # 37  Family Name
+            data.get("father_mobile"),      # 38  Family Contact
+            "Father",                       # 39  Family Relation
+            "",                             # 40  Family Age
+            data.get("marital_status"),     # 41  Family Marital
+            data.get("father_occupation"),  # 42  Family Occupation
+            data.get("tenth_school"),       # 43  Exam Name
+            data.get("tenth_board"),        # 44  Board
+            data.get("tenth_year"),         # 45  Year
+            "",                             # 46  Subject
+            data.get("tenth_percent"),      # 47  Percentage
+            "","","","","",                 # 48-52  Prev Employment (blank)
+            "","","","","",                 # 53-57  Foreign Employment (blank)
+            "",                             # 58  blank
+            # LETTER NO. + LETTER DATED removed
+            app_id,                         # 59  APPLICATION ID
+            sub_date,                       # 60  Submission Date
+            sub_time,                       # 61  Submission Time
+            photo_name,                     # 62  Photo File
+            pdf_name,                       # 63  Rec Letter File
+            gen_pdf_name,                   # 64  Generated PDF
     ]
     wr(ws_app, app_row, fill=fill)
 
