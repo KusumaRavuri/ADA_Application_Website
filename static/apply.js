@@ -215,31 +215,34 @@ function showNav() {
 }
 
 function validateStep(n) {
-  const required = REQUIRED_MAP[n]||[];
+  const required = REQUIRED_MAP[n] || [];
   let ok = true;
   required.forEach(name => {
     const el = document.querySelector(`[name="${name}"]`);
     if (!el) return;
-    if (!el.value.trim()) { el.classList.add("is-invalid"); ok=false; }
-    el.addEventListener("input",()=>el.classList.remove("is-invalid"),{once:true});
+    if (!el.value.trim()) { el.classList.add("is-invalid"); ok = false; }
+    el.addEventListener("input", () => el.classList.remove("is-invalid"), { once: true });
   });
-  if (!ok) { shakeCard(n); showToast("Please fill all required fields marked with *","danger"); return false; }
+  if (!ok) { shakeCard(n); showToast("Please fill all required fields marked with *", "danger"); return false; }
 
-    if (n===8) {
+  if (n === 8) {
     const pdf   = document.getElementById("rec_letter");
     const photo = document.getElementById("photo");
     let fok = true;
-    if (!pdf.files.length)   { document.getElementById("pdfZone").style.borderColor="#e53935"; fok=false; }
-    if (!photo.files.length) { document.getElementById("photoZone").style.borderColor="#e53935"; fok=false; }
-    if (!fok) { shakeCard(n); showToast("Please upload both required files","danger"); return false; }
+    if (!pdf.files.length)   { document.getElementById("pdfZone").style.borderColor = "#e53935"; fok = false; }
+    if (!photo.files.length) { document.getElementById("photoZone").style.borderColor = "#e53935"; fok = false; }
+    if (!fok) { shakeCard(n); showToast("Please upload both required files", "danger"); return false; }
   }
 
-  if (n===9) {
+  if (n === 9) {
     const checks = document.querySelectorAll(".decl-check");
-    if (![...checks].every(c=>c.checked)) {
-      shakeCard(n); showToast("Please check all declaration checkboxes to proceed","warning"); return false;
+    if (![...checks].every(c => c.checked)) {
+      shakeCard(n); showToast("Please check all declaration checkboxes to proceed", "warning"); return false;
     }
   }
+
+  return true;  // ← was missing entirely
+}
 
 function shakeCard(n) {
   const card = getStep(n)?.querySelector(".glass-card");
@@ -347,49 +350,53 @@ function buildReview() {
 }
 
 async function submitForm() {
-  const btn=document.getElementById("submitBtn");
-  const errEl=document.getElementById("submitError");
-  const pdfFile=document.getElementById("rec_letter").files[0];
-  const photoFile=document.getElementById("photo").files[0];
-  if (!pdfFile)   { showToast("Recommendation Letter missing. Go back to step 8.","danger"); return; }
-  if (!photoFile) { showToast("Passport photo missing. Go back to step 8.","danger"); return; }
-  btn.disabled=true;
-  btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>Submitting…';
-  errEl.classList.add("d-none");
-  const fd=new FormData(document.getElementById("appForm"));
+  const btn   = document.getElementById("submitBtn");
+  const errEl = document.getElementById("submitError");
+
+  // ── Pre-flight checks BEFORE disabling button ──
   if (!validateAllFields()) {
-  const firstErr = document.querySelector(".glass-input.is-invalid");
-  if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
-  return;
-}
+    const firstErr = document.querySelector(".glass-input.is-invalid");
+    if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
+    showToast("Please fix the highlighted errors before submitting.", "danger");
+    return;
+  }
+
+  const pdfFile   = document.getElementById("rec_letter").files[0];
+  const photoFile = document.getElementById("photo").files[0];
+  if (!pdfFile)   { showToast("Recommendation Letter missing. Go back to step 8.", "danger"); return; }
+  if (!photoFile) { showToast("Passport photo missing. Go back to step 8.", "danger"); return; }
+
+  // ── Now safe to lock the button ──
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting…';
+  errEl.classList.add("d-none");
+
   try {
-    const resp=await fetch("/submit",{method:"POST",body:fd});
-    const data=await resp.json();
+    const resp = await fetch("/submit", { method: "POST", body: new FormData(document.getElementById("appForm")) });
+    const data = await resp.json();
     if (data.success) {
       clearFormData();
-      // Show modal with App ID and download link
       document.getElementById("modalAppId").textContent = data.app_id;
       document.getElementById("modalDate").textContent  = data.sub_date;
       document.getElementById("modalTime").textContent  = data.sub_time;
       if (data.pdf_available) {
-        document.getElementById("modalDownloadBtn").href = `/download_pdf/${data.app_id}`;
+        document.getElementById("modalDownloadBtn").href         = `/download_pdf/${data.app_id}`;
         document.getElementById("modalDownloadBtn").style.display = "";
       } else {
         document.getElementById("modalDownloadBtn").style.display = "none";
       }
-      const modal = new bootstrap.Modal(document.getElementById("successModal"));
-      modal.show();
+      new bootstrap.Modal(document.getElementById("successModal")).show();
     } else {
-      errEl.textContent=data.error||"Submission failed. Please try again.";
+      errEl.textContent = data.error || "Submission failed. Please try again.";
       errEl.classList.remove("d-none");
-      btn.disabled=false;
-      btn.innerHTML='<i class="bi bi-send-fill me-2"></i>Submit Application';
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bi bi-send-fill me-2"></i>Submit Application';
     }
-  } catch(err) {
-    errEl.textContent="Network error. Please check your connection and try again.";
+  } catch (err) {
+    errEl.textContent = "Network error. Please check your connection and try again.";
     errEl.classList.remove("d-none");
-    btn.disabled=false;
-    btn.innerHTML='<i class="bi bi-send-fill me-2"></i>Submit Application';
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-send-fill me-2"></i>Submit Application';
   }
 }
 
