@@ -4,6 +4,119 @@ let currentStep = 1;
 const TOTAL_STEPS = 9;
 const STORAGE_KEY = "ada_portal_form_v4";
 
+// ── Field Validation Rules ─────────────────────────────────
+const VALIDATORS = {
+  aadhaar: {
+    // After auto-format: "DDDD DDDD DDDD"
+    test: v => /^\d{4}\s\d{4}\s\d{4}$/.test(v),
+    msg:  "Aadhaar must be 12 digits (format: XXXX XXXX XXXX)"
+  },
+  mobile: {
+    test: v => /^(\+91[\-\s]?)?[6-9]\d{9}$/.test(v.trim()),
+    msg:  "Enter a valid 10-digit Indian mobile number"
+  },
+  whatsapp: {
+    test: v => !v.trim() || /^(\+91[\-\s]?)?[6-9]\d{9}$/.test(v.trim()),
+    msg:  "Enter a valid 10-digit Indian mobile number"
+  },
+  landline: {
+    test: v => !v.trim() || /^\d{6,12}$/.test(v.trim()),
+    msg:  "Enter STD code + number, digits only (6–12 digits)"
+  },
+  imei: {
+    test: v => !v.trim() || /^\d{15}$/.test(v.trim()),
+    msg:  "IMEI must be exactly 15 digits"
+  },
+  pan: {
+    test: v => !v.trim() || /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(v.trim().toUpperCase()),
+    msg:  "PAN format: 5 letters + 4 digits + 1 letter (e.g. ABCDE1234F)"
+  },
+  email: {
+    test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+    msg:  "Enter a valid email address (e.g. you@example.com)"
+  }
+};
+
+// Map: field name → input ID / error div ID
+const FIELD_IDS = {
+  aadhaar:  "aadhaarInput",
+  mobile:   "mobileInput",
+  whatsapp: "whatsappInput",
+  landline: "landlineInput",
+  imei:     "imeiInput",
+  pan:      "panInput",
+  email:    "emailInput"
+};
+
+function validateField(name) {
+  const input = document.getElementById(FIELD_IDS[name]);
+  const errDiv = document.getElementById("err_" + name);
+  if (!input || !errDiv) return true;
+
+  const val = input.value;
+  const rule = VALIDATORS[name];
+  const ok = rule.test(val);
+
+  input.classList.toggle("is-invalid", !ok);
+  input.classList.toggle("is-valid",    ok);
+  errDiv.textContent = ok ? "" : rule.msg;
+  return ok;
+}
+
+function validateAllFields() {
+  // Returns true only if all currently visible/filled validated fields pass
+  return Object.keys(VALIDATORS).every(name => validateField(name));
+}
+
+// ── Aadhaar auto-format: insert spaces after every 4 digits ─
+document.addEventListener("DOMContentLoaded", () => {
+  const aadhaar = document.getElementById("aadhaarInput");
+  if (aadhaar) {
+    aadhaar.addEventListener("input", e => {
+      // Strip non-digits, then insert spaces at positions 4 and 8
+      let raw = e.target.value.replace(/\D/g, "").slice(0, 12);
+      e.target.value = raw.replace(/(\d{4})(\d{0,4})(\d{0,4})/, (_, a, b, c) =>
+        [a, b, c].filter(Boolean).join(" ")
+      );
+      validateField("aadhaar");
+    });
+  }
+
+  // PAN: auto uppercase
+  const pan = document.getElementById("panInput");
+  if (pan) {
+    pan.addEventListener("input", () => {
+      pan.value = pan.value.toUpperCase();
+      validateField("pan");
+    });
+  }
+
+  // Live validate on blur for all fields
+  Object.keys(FIELD_IDS).forEach(name => {
+    const el = document.getElementById(FIELD_IDS[name]);
+    if (el) {
+      el.addEventListener("blur",  () => validateField(name));
+      el.addEventListener("input", () => {
+        // Only show green/clear error once user starts correcting
+        if (el.classList.contains("is-invalid")) validateField(name);
+      });
+    }
+  });
+});
+
+// ── Hook into your existing changeStep / submitForm ─────────
+// Call validateAllFields() before moving from Step 1
+// Find your existing changeStep function and add this guard for step 1→2:
+//
+//   if (currentStep === 1 && direction === 1) {
+//     if (!validateAllFields()) {
+//       alert("Please fix the highlighted errors before continuing.");
+//       return;
+//     }
+//   }
+//
+// And in submitForm(), call validateAllFields() before the fetch.
+
 const STEP_META = [
   { title:"Personal Details", fields:["name","gender","dob","aadhaar","mobile","email","whatsapp","landline","imei","permanent_address","present_address","previous_address","qualification","marital_status","designation","pan","facebook","linkedin","instagram","other_id","bank_name","bank_account","ifsc","epf","esic"],
     labels:{name:"Full Name",gender:"Gender",dob:"Date of Birth",aadhaar:"Aadhaar",mobile:"Mobile",email:"Email",whatsapp:"WhatsApp",landline:"Landline",imei:"IMEI",permanent_address:"Permanent Address",present_address:"Present Address",previous_address:"Previous Address",qualification:"Qualification",marital_status:"Marital Status",designation:"Designation",pan:"PAN",facebook:"Facebook",linkedin:"LinkedIn",instagram:"Instagram",other_id:"Other ID",bank_name:"Bank Name",bank_account:"Account No",ifsc:"IFSC",epf:"EPF",esic:"ESIC"} },
@@ -139,6 +252,15 @@ function showToast(msg,type="danger") {
 
 function changeStep(dir) {
   const next = currentStep+dir;
+  // Inside changeStep(direction), at the very top:
+  if (direction === 1 && currentStep === 1) {
+    if (!validateAllFields()) {
+      // Scroll to first error
+      const firstErr = document.querySelector(".glass-input.is-invalid");
+      if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;   // block advancing
+    }
+  }
   if (dir===1 && !validateStep(currentStep)) return;
   if (next<1||next>TOTAL_STEPS) return;
   saveFormData();
@@ -219,6 +341,11 @@ async function submitForm() {
   btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>Submitting…';
   errEl.classList.add("d-none");
   const fd=new FormData(document.getElementById("appForm"));
+  if (!validateAllFields()) {
+  const firstErr = document.querySelector(".glass-input.is-invalid");
+  if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
+  return;
+}
   try {
     const resp=await fetch("/submit",{method:"POST",body:fd});
     const data=await resp.json();
