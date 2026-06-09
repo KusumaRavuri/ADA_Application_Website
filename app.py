@@ -1061,11 +1061,13 @@ def submit():
 
     # Generate App ID + timestamp
     app_id   = generate_app_id()
-    now      = datetime.now()
+    from datetime import timezone, timedelta
+    IST = timezone(timedelta(hours=5, minutes=30))
+    now      = datetime.now(IST)
     sub_date = now.strftime("%d-%m-%Y")
-    hour = now.hour
-    am_pm = "AM" if hour < 12 else "PM"
-    hour12 = hour % 12 or 12
+    hour     = now.hour
+    am_pm    = "AM" if hour < 12 else "PM"
+    hour12   = hour % 12 or 12
     sub_time = f"{hour12:02d}:{now.minute:02d}:{now.second:02d} {am_pm}"
 
     # Generate consolidated PDF
