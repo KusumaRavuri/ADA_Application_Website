@@ -1,7 +1,7 @@
 /* ADA Application Portal — Multi-step Form JS (9 steps, enhanced) */
 
 let currentStep = 1;
-const TOTAL_STEPS = 9;
+const TOTAL_STEPS = 10;
 const STORAGE_KEY = "ada_portal_form_v4";
 
 // ── Field Validation Rules ─────────────────────────────────
