@@ -118,27 +118,45 @@ document.addEventListener("DOMContentLoaded", () => {
 // And in submitForm(), call validateAllFields() before the fetch.
 
 const STEP_META = [
-  { title:"Personal Details", fields:["name","gender","dob","aadhaar","mobile","email","whatsapp","landline","imei","permanent_address","present_address","previous_address","qualification","marital_status","designation","pan","facebook","linkedin","instagram","other_id","bank_name","bank_account","ifsc","epf","esic"],
+  { title:"Personal Details",
+    fields:["name","gender","dob","aadhaar","mobile","email","whatsapp","landline","imei","permanent_address","present_address","previous_address","qualification","marital_status","designation","pan","facebook","linkedin","instagram","other_id","bank_name","bank_account","ifsc","epf","esic"],
     labels:{name:"Full Name",gender:"Gender",dob:"Date of Birth",aadhaar:"Aadhaar",mobile:"Mobile",email:"Email",whatsapp:"WhatsApp",landline:"Landline",imei:"IMEI",permanent_address:"Permanent Address",present_address:"Present Address",previous_address:"Previous Address",qualification:"Qualification",marital_status:"Marital Status",designation:"Designation",pan:"PAN",facebook:"Facebook",linkedin:"LinkedIn",instagram:"Instagram",other_id:"Other ID",bank_name:"Bank Name",bank_account:"Account No",ifsc:"IFSC",epf:"EPF",esic:"ESIC"} },
-  { title:"Education Details", fields:["tenth_school","tenth_board","tenth_year","tenth_percent","inter_institution","inter_board","inter_year","inter_percent","btech_college","btech_branch","btech_cgpa","btech_year"],
+
+  { title:"Education Details",
+    fields:["tenth_school","tenth_board","tenth_year","tenth_percent","inter_institution","inter_board","inter_year","inter_percent","btech_college","btech_branch","btech_cgpa","btech_year"],
     labels:{tenth_school:"10th School",tenth_board:"10th Board",tenth_year:"10th Year",tenth_percent:"10th %",inter_institution:"Inter/Diploma Institution",inter_board:"Inter Board",inter_year:"Inter Year",inter_percent:"Inter %",btech_college:"BTech College",btech_branch:"Branch",btech_cgpa:"CGPA",btech_year:"Year of Study"} },
-  { title:"Family Details", fields:["father_name","father_occupation","father_mobile","mother_name","mother_occupation","mother_mobile","num_siblings","sibling_info"],
+
+  { title:"Family Details",
+    fields:["father_name","father_occupation","father_mobile","mother_name","mother_occupation","mother_mobile","num_siblings","sibling_info"],
     labels:{father_name:"Father Name",father_occupation:"Father Occupation",father_mobile:"Father Mobile",mother_name:"Mother Name",mother_occupation:"Mother Occupation",mother_mobile:"Mother Mobile",num_siblings:"No. of Siblings",sibling_info:"Sibling Info"} },
-  { title:"Faculty Coordinator", fields:["faculty_name","faculty_designation","faculty_department","affiliation_id","faculty_email","faculty_contact","faculty_fax"],
+
+  { title:"Faculty Coordinator",
+    fields:["faculty_name","faculty_designation","faculty_department","affiliation_id","faculty_email","faculty_contact","faculty_fax"],
     labels:{faculty_name:"Faculty Name",faculty_designation:"Designation",faculty_department:"Department",affiliation_id:"Affiliation ID",faculty_email:"Faculty Email",faculty_contact:"Faculty Contact",faculty_fax:"Faculty Fax"} },
-  { title:"College Details", fields:["college_name","principal_name","university_affiliation_name","university_affiliation_no","aicte_code","dte_code","college_email","college_contact","college_fax"],
+
+  { title:"College Details",
+    fields:["college_name","principal_name","university_affiliation_name","university_affiliation_no","aicte_code","dte_code","college_email","college_contact","college_fax"],
     labels:{college_name:"College Name",principal_name:"Principal",university_affiliation_name:"University Affiliation",university_affiliation_no:"Affiliation No",aicte_code:"AICTE Code",dte_code:"DTE Code",college_email:"College Email",college_contact:"College Contact",college_fax:"College Fax"} },
-  { title:"Project Details", fields:["project_title","guide","area_of_work","duration_from","duration_to","temp_pass","temp_pass_validity","university_reg","letter_no","letter_date"],
-    labels:{project_title:"Project Title",guide:"Guide/Directorate",area_of_work:"Area of Work",duration_from:"Duration From",duration_to:"Duration To",temp_pass:"Temp Pass",temp_pass_validity:"Pass Validity",university_reg:"Univ. Reg No.",letter_no:"Letter No.",letter_date:"Letter Date"} },
+
+  { title:"Project Details",
+    fields:["project_title","guide","area_of_work","duration_from","duration_to","university_reg"],
+    labels:{project_title:"Project Title",guide:"Guide/Directorate",area_of_work:"Area of Work",duration_from:"Duration From",duration_to:"Duration To",university_reg:"Univ. Reg No."} },
+
+  { title:"Employment Details",
+    fields:["prev_emp_company","prev_emp_from","prev_emp_to","prev_emp_categories","foreign_name","foreign_relation","foreign_job","foreign_country","foreign_duration"],
+    labels:{prev_emp_company:"Company Name",prev_emp_from:"From",prev_emp_to:"To",prev_emp_categories:"Categories of Work",foreign_name:"Foreign - Name",foreign_relation:"Foreign - Relation",foreign_job:"Foreign - Job",foreign_country:"Foreign - Country",foreign_duration:"Foreign - Duration"} },
 ];
 
 const REQUIRED_MAP = {
   1:["name","gender","dob","aadhaar","mobile","email","permanent_address","present_address","qualification"],
   2:["btech_college","btech_branch"],
   3:[],4:["faculty_name"],5:["college_name"],
-  6:["duration_from","duration_to"],7:[],8:[],9:[]
+  6:["duration_from","duration_to"],
+  7:[],   // Employment — all optional
+  8:[],   // Documents — handled by file check below
+  9:[],   // Declaration — handled by checkbox check below
+  10:[]
 };
-
 function getAllFormFields() {
   const form = document.getElementById("appForm");
   const data = {};
@@ -207,7 +225,7 @@ function validateStep(n) {
   });
   if (!ok) { shakeCard(n); showToast("Please fill all required fields marked with *","danger"); return false; }
 
-  if (n===7) {
+    if (n===8) {
     const pdf   = document.getElementById("rec_letter");
     const photo = document.getElementById("photo");
     let fok = true;
@@ -216,14 +234,12 @@ function validateStep(n) {
     if (!fok) { shakeCard(n); showToast("Please upload both required files","danger"); return false; }
   }
 
-  if (n===8) {
+  if (n===9) {
     const checks = document.querySelectorAll(".decl-check");
     if (![...checks].every(c=>c.checked)) {
       shakeCard(n); showToast("Please check all declaration checkboxes to proceed","warning"); return false;
     }
   }
-  return true;
-}
 
 function shakeCard(n) {
   const card = getStep(n)?.querySelector(".glass-card");
@@ -335,8 +351,8 @@ async function submitForm() {
   const errEl=document.getElementById("submitError");
   const pdfFile=document.getElementById("rec_letter").files[0];
   const photoFile=document.getElementById("photo").files[0];
-  if (!pdfFile)   { showToast("Recommendation Letter missing. Go back to step 7.","danger"); return; }
-  if (!photoFile) { showToast("Passport photo missing. Go back to step 7.","danger"); return; }
+  if (!pdfFile)   { showToast("Recommendation Letter missing. Go back to step 8.","danger"); return; }
+  if (!photoFile) { showToast("Passport photo missing. Go back to step 8.","danger"); return; }
   btn.disabled=true;
   btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>Submitting…';
   errEl.classList.add("d-none");
