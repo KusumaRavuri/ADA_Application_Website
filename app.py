@@ -59,7 +59,7 @@ def generate_app_id():
         sheet = "Application" if "Application" in wb.sheetnames else wb.sheetnames[0]
         ws = wb[sheet]
         max_num = 0
-        for row in ws.iter_rows(min_row=3, values_only=True):
+        for row in ws.iter_rows(min_row=2, values_only=True):
             val = row[57] if len(row) > 57 else None
             if val and str(val).startswith(f"ADA{year}"):
                 try:
@@ -297,7 +297,7 @@ def save_to_excel(data, app_id, sub_date, sub_time, photo_name, pdf_name, gen_pd
         ws.row_dimensions[rn].height = 18
       
     ws_app = wb["Application"]
-    sno = max(0, ws_app.max_row - 2) + 1
+    sno = max(0, ws_app.max_row - 1) + 1  # 1 header row
     fill = alt1 if sno % 2 == 1 else alt2
     app_row = [
         sno,                                    #  1  S No
@@ -461,7 +461,7 @@ def email_exists(email):
         return False
     ws = wb["Application"]
     # Email is in column 22
-    for row in ws.iter_rows(min_row=3, values_only=True):
+    for row in ws.iter_rows(min_row=2, values_only=True):
         if row[21] and str(row[21]).strip().lower() == email.strip().lower():
             return True
     return False
@@ -1169,9 +1169,9 @@ def admin():
         if "Application" in wb.sheetnames:
             ws = wb["Application"]
             seen_branches = set()
-            # Row 1 & 2 are headers; data starts at row 3
-            for row in ws.iter_rows(min_row=3, values_only=True):
-                if not row[57]:   # col 63 = APPLICATION ID (idx 62)
+            # Row 1 is the header; data starts at row 2
+            for row in ws.iter_rows(min_row=2, values_only=True):
+                if not row[57]:   # APPLICATION ID (col 58, idx 57)
                     continue
                 a = {
                     "App ID":        row[57],   # col 58
