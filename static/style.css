@@ -427,9 +427,17 @@ body::before {
 .success-actions { display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap; }
 
 /* ── Footer ───────────────────────────────────────────────── */
+main {
+  flex: 1;
+}
+
 .site-footer {
-  padding:1.5rem; border-top:1.5px solid var(--blue-200);
-  background:rgba(255,255,255,0.9); position:relative; z-index:1;
+  margin-top: auto;
+  padding: 1.5rem;
+  border-top: 1.5px solid var(--blue-200);
+  background: rgba(255,255,255,0.9);
+  position: relative;
+  z-index: 1;
 }
 .footer-text { font-size:0.82rem; color:var(--text-muted); }
 
