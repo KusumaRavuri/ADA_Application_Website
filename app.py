@@ -29,7 +29,17 @@ from PIL import Image as PILImage
 
 # ── Config ─────────────────────────────────────────────────
 app = Flask(__name__)
-app.secret_key = "ada_portal_2026_xK9#mP2"
+app.secret_key  = os.environ.get("SECRET_KEY", os.urandom(32))
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SECURE"]   = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["MAX_CONTENT_LENGTH"]      = 5 * 1024 * 1024
+
+ADMIN_EMAIL     = os.environ.get("ADMIN_EMAIL", "ada.admin@portal.in")
+ADMIN_PASSWORD  = os.environ.get("ADMIN_PASSWORD", "ADA@Admin2026")
+ADMIN_PASS_HASH = hashlib.sha256(ADMIN_PASSWORD.encode()).hexdigest()
+
+
 
 BASE_DIR        = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_PDF_DIR  = os.path.join(BASE_DIR, "uploads", "pdfs")
@@ -40,10 +50,6 @@ EXCEL_PATH      = os.path.join(BASE_DIR, "APPLICATION.xlsx")
 
 ALLOWED_PDF = {"pdf"}
 ALLOWED_IMG = {"jpg", "jpeg", "png"}
-
-ADMIN_EMAIL     = "ada.admin@portal.in"
-ADMIN_PASSWORD  = "ADA@Admin2026"
-ADMIN_PASS_HASH = hashlib.sha256(ADMIN_PASSWORD.encode()).hexdigest()
 
 for d in [UPLOAD_PDF_DIR, UPLOAD_PHO_DIR, UPLOAD_GEN_DIR, SAMPLE_DIR]:
     os.makedirs(d, exist_ok=True)
