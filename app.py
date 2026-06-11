@@ -26,7 +26,6 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY, TA_RIGHT
 from reportlab.pdfgen import canvas as rl_canvas
 from PIL import Image as PILImage
-import pikepdf
 
 # ── Config ─────────────────────────────────────────────────
 app = Flask(__name__)
@@ -74,65 +73,6 @@ def generate_app_id():
 def allowed_file(filename, allowed_set):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in allowed_set
 
-def compress_image(file_storage, target_kb=20):
-    """Compress & resize image to target_kb max. Returns (BytesIO, error_str).
-    error_str is None on success, message string if file cannot fit."""
-    try:
-        img = PILImage.open(file_storage.stream)
-    except Exception:
-        return None, "Invalid image file. Please upload a valid JPG or PNG."
-
-    if img.mode in ("RGBA", "P"):
-        img = img.convert("RGB")
-
-    # Step 1: resize down aggressively if needed
-    max_dim = 600
-    w, h = img.size
-    if w > max_dim or h > max_dim:
-        ratio = min(max_dim/w, max_dim/h)
-        img = img.resize((int(w*ratio), int(h*ratio)), PILImage.LANCZOS)
-
-    # Step 2: reduce quality until size fits
-    buf = io.BytesIO()
-    for quality in [85, 70, 55, 40, 25, 15, 10]:
-        buf.seek(0); buf.truncate()
-        img.save(buf, format="JPEG", quality=quality, optimize=True)
-        if buf.tell() <= target_kb * 1024:
-            buf.seek(0)
-            return buf, None
-
-    # Step 3: shrink dimensions further
-    for scale in [0.75, 0.5, 0.35, 0.25]:
-        small = img.resize((max(1,int(img.width*scale)), max(1,int(img.height*scale))), PILImage.LANCZOS)
-        buf.seek(0); buf.truncate()
-        small.save(buf, format="JPEG", quality=15, optimize=True)
-        if buf.tell() <= target_kb * 1024:
-            buf.seek(0)
-            return buf, None
-
-    return None, f"Photo is too large and cannot be compressed under {target_kb} KB. Please upload a smaller photo."
-
-def compress_pdf(file_storage, target_kb=100):
-    """Compress PDF using pikepdf. Returns (BytesIO, error_str).
-    error_str is None on success, message string if exceeds limit."""
-    raw = file_storage.read()
-    if not raw:
-        return None, "Uploaded PDF is empty."
-
-    try:
-        with pikepdf.open(io.BytesIO(raw)) as pdf:
-            buf = io.BytesIO()
-            pdf.save(buf, compress_streams=True,
-                     object_stream_mode=pikepdf.ObjectStreamMode.generate)
-            buf.seek(0)
-            size_kb = buf.getbuffer().nbytes / 1024
-            if size_kb <= target_kb:
-                return buf, None
-            # Still too large — return error
-            return None, (f"Recommendation letter PDF is {size_kb:.0f} KB after compression. "
-                          f"Maximum allowed is {target_kb} KB. Please compress the PDF before uploading.")
-    except Exception as e:
-        return None, f"PDF could not be processed: {str(e)}"
 
 def unique_filename(ext):
     return f"{uuid.uuid4().hex}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
@@ -447,8 +387,6 @@ def save_to_excel(data, app_id, sub_date, sub_time, photo_name, pdf_name, gen_pd
         *masters,                # 16-19
         *phd,                    # 20-23
     ], fill=alt1 if edu_sno % 2 == 1 else alt2)
-
-    wb.save(EXCEL_PATH)
 
     wb.save(EXCEL_PATH)
 
@@ -974,22 +912,24 @@ def submit():
         return jsonify({"success": False, "error": "Photo must be JPG, JPEG or PNG."})
 
     # Compress and save photo — hard reject if too large
-    photo_buf, photo_err = compress_image(photo_file, target_kb=20)
-    if photo_err:
-        return jsonify({"success": False, "error": photo_err})
+    photo_file.stream.seek(0, 2)
+    photo_size_kb = photo_file.stream.tell() / 1024
+    photo_file.stream.seek(0)
+    if photo_size_kb > 100:
+        return jsonify({"success": False, "error": f"Photo must be under 100 KB. Your file is {photo_size_kb:.0f} KB."})
     photo_name = unique_filename("jpg")
     photo_path = os.path.join(UPLOAD_PHO_DIR, photo_name)
-    with open(photo_path, "wb") as pf:
-        pf.write(photo_buf.read())
+    photo_file.save(photo_path)
 
     # Compress and save recommendation letter — hard reject if too large
-    pdf_buf, pdf_err = compress_pdf(rec_file, target_kb=100)
-    if pdf_err:
-        return jsonify({"success": False, "error": pdf_err})
+    rec_file.stream.seek(0, 2)
+    pdf_size_kb = rec_file.stream.tell() / 1024
+    rec_file.stream.seek(0)
+    if pdf_size_kb > 300:
+        return jsonify({"success": False, "error": f"Recommendation letter must be under 300 KB. Your file is {pdf_size_kb:.0f} KB."})
     pdf_name = unique_filename("pdf")
     pdf_path = os.path.join(UPLOAD_PDF_DIR, pdf_name)
-    with open(pdf_path, "wb") as pf:
-        pf.write(pdf_buf.read())
+    rec_file.save(pdf_path)
 
     
     fields = [
