@@ -26,6 +26,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY, TA_RIGHT
 from reportlab.pdfgen import canvas as rl_canvas
 from PIL import Image as PILImage
+import pikepdf
 
 # ── Config ─────────────────────────────────────────────────
 app = Flask(__name__)
