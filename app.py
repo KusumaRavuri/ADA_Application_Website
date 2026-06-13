@@ -49,6 +49,16 @@ UPLOAD_GEN_DIR  = os.path.join(BASE_DIR, "uploads", "generated")
 SAMPLE_DIR      = os.path.join(BASE_DIR, "samples")
 EXCEL_PATH      = os.path.join(BASE_DIR, "APPLICATION.xlsx")
 
+@app.route("/where")
+def where():
+    return f"""
+    BASE_DIR: {BASE_DIR}<br>
+    Photos: {UPLOAD_PHO_DIR}<br>
+    PDFs: {UPLOAD_PDF_DIR}<br>
+    Generated PDFs: {UPLOAD_GEN_DIR}<br>
+    Excel: {EXCEL_PATH}
+    """
+
 ALLOWED_PDF = {"pdf"}
 ALLOWED_IMG = {"jpg", "jpeg", "png"}
 
