@@ -41,8 +41,9 @@ ADMIN_PASSWORD  = os.environ.get("ADMIN_PASSWORD", "ADA@Admin2026")
 ADMIN_PASS_HASH = hashlib.sha256(ADMIN_PASSWORD.encode()).hexdigest()
 
 
-
+#Find a folder where app.py is located
 BASE_DIR        = os.path.dirname(os.path.abspath(__file__))
+
 UPLOAD_PDF_DIR  = os.path.join(BASE_DIR, "uploads", "pdfs")
 UPLOAD_PHO_DIR  = os.path.join(BASE_DIR, "uploads", "photos")
 UPLOAD_GEN_DIR  = os.path.join(BASE_DIR, "uploads", "generated")
