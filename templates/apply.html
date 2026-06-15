@@ -43,12 +43,12 @@
         <div class="glass-card">
           <div class="card-section-header"><i class="bi bi-person-fill"></i> Personal Details</div>
           <div class="row g-3">
-            <div class="col-md-6"><label class="form-label">Full Name <span class="req">*</span></label><input type="text" class="form-control glass-input" name="name" placeholder="Your full name" required/></div>
-            <div class="col-md-3"><label class="form-label">Gender <span class="req">*</span></label>
+            <div class="col-md-6"><label class="form-label">Full Name</label><input type="text" class="form-control glass-input" name="name" placeholder="Your full name" required/></div>
+            <div class="col-md-3"><label class="form-label">Gender </label>
               <select class="form-select glass-input" name="gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select>
             </div>
-            <div class="col-md-3"><label class="form-label">Date of Birth <span class="req">*</span></label><input type="date" class="form-control glass-input" name="dob" required/></div>
-            <div class="col-md-6"><label class="form-label">Aadhaar Number <span class="req">*</span></label><input type="text" class="form-control glass-input" name="aadhaar"
+            <div class="col-md-3"><label class="form-label">Date of Birth</label><input type="date" class="form-control glass-input" name="dob" required/></div>
+            <div class="col-md-6"><label class="form-label">Aadhaar Number</label><input type="text" class="form-control glass-input" name="aadhaar"
                     id="aadhaarInput"
                     maxlength="14"
                     placeholder="XXXX XXXX XXXX"
@@ -57,7 +57,7 @@
                     inputmode="numeric"
                     required/><div class="field-error" id="err_aadhaar"></div></div>
             
-            <div class="col-md-6"><label class="form-label">Mobile Number <span class="req">*</span></label><input type="tel" class="form-control glass-input" name="mobile"
+            <div class="col-md-6"><label class="form-label">Mobile Number</label><input type="tel" class="form-control glass-input" name="mobile"
                       id="mobileInput"
                       placeholder="+91 XXXXXXXXXX"
                       pattern="(\+91[\-\s]?)?[6-9]\d{9}"
@@ -66,7 +66,7 @@
                       maxlength="14"
                       required/><div class="field-error" id="err_mobile"></div></div>
             
-            <div class="col-md-6"><label class="form-label">E-Mail ID <span class="req">*</span></label><input type="email" class="form-control glass-input" name="email"
+            <div class="col-md-6"><label class="form-label">E-Mail ID</label><input type="email" class="form-control glass-input" name="email"
                       id="emailInput"
                       placeholder="you@example.com"
                       title="Enter a valid email address (must contain @)"
@@ -78,21 +78,32 @@
                     pattern="(\+91[\-\s]?)?[6-9]\d{9}"
                     title="Enter a valid 10-digit Indian mobile number"
                     inputmode="numeric"
-                    maxlength="14"/><div class="field-error" id="err_whatsapp"></div></div>
+                    maxlength="14" required/><div class="field-error" id="err_whatsapp"></div></div>
             
-            <div class="col-12"><label class="form-label">Permanent Address <span class="req">*</span></label><textarea class="form-control glass-input" name="permanent_address" rows="2" placeholder="Full permanent address" required></textarea></div>
-            <div class="col-12"><label class="form-label">Present Address (Bangalore) <span class="req">*</span></label><textarea class="form-control glass-input" name="present_address" rows="2" placeholder="Current residential address in Bangalore" required></textarea></div>
+            <div class="col-12"><label class="form-label">Permanent Address</label><textarea class="form-control glass-input" name="permanent_address" rows="2" placeholder="Full permanent address" required></textarea></div>
+            <div class="col-12"><label class="form-label">Present Address (Bangalore)</label><textarea class="form-control glass-input" name="present_address" rows="2" placeholder="Current residential address in Bangalore" required></textarea></div>
             <div class="col-12"><label class="form-label">Previous Residential Address</label><textarea class="form-control glass-input" name="previous_address" rows="2" placeholder="Previous address (if applicable)"></textarea></div>
             <!-- Extra identity fields -->
-            <div class="col-md-4"><label class="form-label">Qualification <span class="req">*</span></label>
+            <div class="col-md-4"><label class="form-label">Qualification</label>
               <select class="form-select glass-input" name="qualification" required>
                 <option value="">Select</option><option>B.E</option><option>B.Tech</option><option>M.E</option><option>M.Tech</option><option>MCA</option><option>MSc</option><option>Diploma</option><option>Other</option>
               </select>
             </div>
             <div class="col-md-4"><label class="form-label">Marital Status</label>
-              <select class="form-select glass-input" name="marital_status"><option value="">Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select>
+              <select class="form-select glass-input" name="marital_status" required><option value="">Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select>
             </div>
-            <div class="col-md-4"><label class="form-label">Designation</label><input type="text" class="form-control glass-input" name="designation" placeholder="e.g. Student Intern"/></div>
+            <div class="col-12">
+            <label class="form-label">
+              Health Issues / Medical Details
+            </label>
+            <textarea
+                class="form-control glass-input"
+                name="health_issues"
+                rows="3"
+                placeholder="Mention any medical conditions, allergies, disabilities, or type 'None' if not applicable."
+                required></textarea>
+            </div>
+            <div class="col-md-4"><label class="form-label">Designation</label><input type="text" class="form-control glass-input" name="designation" placeholder="e.g. Student Intern" required/></div>
             <div class="col-md-4"><label class="form-label">Landline No.</label><input type="tel" class="form-control glass-input" name="landline"
                       id="landlineInput"
                       placeholder="e.g. 08012345678"
@@ -107,7 +118,7 @@
                       pattern="\d{15}"
                       title="IMEI must be exactly 15 digits"
                       inputmode="numeric"
-                      maxlength="15"/><div class="field-error" id="err_imei"></div></div>
+                      maxlength="15" required/><div class="field-error" id="err_imei"></div></div>
             
             <div class="col-md-4"><label class="form-label">PAN No.</label><input type="text" class="form-control glass-input" name="pan"
                       id="panInput"
@@ -115,7 +126,7 @@
                       placeholder="ABCDE1234F"
                       pattern="[A-Z]{5}[0-9]{4}[A-Z]"
                       title="PAN format: 5 uppercase letters, 4 digits, 1 uppercase letter (e.g. ABCDE1234F)"
-                      style="text-transform:uppercase"/><div class="field-error" id="err_pan"></div></div>
+                      style="text-transform:uppercase" required/><div class="field-error" id="err_pan"></div></div>
             
             <div class="col-md-6"><label class="form-label">Facebook ID</label><input type="text" class="form-control glass-input" name="facebook" placeholder="facebook.com/username"/></div>
             <div class="col-md-6"><label class="form-label">LinkedIn ID</label><input type="text" class="form-control glass-input" name="linkedin" placeholder="linkedin.com/in/username"/></div>
@@ -123,8 +134,8 @@
             <div class="col-md-6"><label class="form-label">Other ID (if any)</label><input type="text" class="form-control glass-input" name="other_id" placeholder="Any other identification"/></div>
             <!-- Bank Details in Personal step -->
             <div class="col-12"><div class="card-section-header mt-2" style="border-radius:8px;"><i class="bi bi-bank2"></i> Bank Details</div></div>
-            <div class="col-md-4"><label class="form-label">Bank Name</label><input type="text" class="form-control glass-input" name="bank_name" placeholder="e.g. State Bank of India"/></div>
-            <div class="col-md-4"><label class="form-label">Bank Account No.</label><input type="text" class="form-control glass-input" name="bank_account" placeholder="Account number"/></div>
+            <div class="col-md-4"><label class="form-label">Bank Name</label><input type="text" class="form-control glass-input" name="bank_name" placeholder="e.g. State Bank of India" required/></div>
+            <div class="col-md-4"><label class="form-label">Bank Account No.</label><input type="text" class="form-control glass-input" name="bank_account" placeholder="Account number" required/></div>
             <div class="col-md-4"><label class="form-label">IFSC Code</label><input type="text" class="form-control glass-input" name="ifsc" placeholder="e.g. SBIN0000123" maxlength="11"/></div>
             <div class="col-md-4"><label class="form-label">EPF No.</label><input type="text" class="form-control glass-input" name="epf" placeholder="EPF number"/></div>
             <div class="col-md-4"><label class="form-label">ESIC No.</label><input type="text" class="form-control glass-input" name="esic" placeholder="ESIC number"/></div>
@@ -153,24 +164,24 @@
               <tbody>
                 <tr>
                   <td><span class="edu-level-badge">10th Standard</span></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="tenth_school" placeholder="School name"/></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="tenth_board" placeholder="e.g. CBSE"/></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="tenth_year" placeholder="2018"/></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="tenth_percent" placeholder="88%"/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="tenth_school" placeholder="School name" required/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="tenth_board" placeholder="e.g. CBSE" required/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="tenth_year" placeholder="2018" required/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="tenth_percent" placeholder="88%" required/></td>
                 </tr>
                 <tr>
                   <td><span class="edu-level-badge">Inter / Diploma</span></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="inter_institution" placeholder="Institution name"/></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="inter_board" placeholder="Board & Branch"/></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="inter_year" placeholder="2020"/></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="inter_percent" placeholder="91%"/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="inter_institution" placeholder="Institution name" required/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="inter_board" placeholder="Board & Branch" required/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="inter_year" placeholder="2020" required/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="inter_percent" placeholder="91%" required/></td>
                 </tr>
                 <tr>
                   <td><span class="edu-level-badge">B.Tech / Degree</span></td>
                   <td><input type="text" class="form-control glass-input-sm" name="btech_college" placeholder="College name" required/></td>
                   <td><input type="text" class="form-control glass-input-sm" name="btech_branch" placeholder="Branch / CSE" required/></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="btech_year" placeholder="2027"/></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="btech_cgpa" placeholder="8.5 CGPA"/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="btech_year" placeholder="2027" required/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="btech_cgpa" placeholder="8.5 CGPA" required/></td>
                 </tr>
               </tbody>
               <!-- Dynamic education rows appended here -->
@@ -206,15 +217,15 @@
               <tbody>
                 <tr>
                   <td><span class="edu-level-badge">Father</span></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="father_name" placeholder="Father's name"/></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="father_occupation" placeholder="Occupation"/></td>
-                  <td><input type="tel" class="form-control glass-input-sm" name="father_mobile" placeholder="+91 XXXXXXXXXX"/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="father_name" placeholder="Father's name" required/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="father_occupation" placeholder="Occupation" required/></td>
+                  <td><input type="tel" class="form-control glass-input-sm" name="father_mobile" placeholder="+91 XXXXXXXXXX" required/></td>
                 </tr>
                 <tr>
                   <td><span class="edu-level-badge">Mother</span></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="mother_name" placeholder="Mother's name"/></td>
-                  <td><input type="text" class="form-control glass-input-sm" name="mother_occupation" placeholder="Occupation"/></td>
-                  <td><input type="tel" class="form-control glass-input-sm" name="mother_mobile" placeholder="+91 XXXXXXXXXX"/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="mother_name" placeholder="Mother's name" required/></td>
+                  <td><input type="text" class="form-control glass-input-sm" name="mother_occupation" placeholder="Occupation" required/></td>
+                  <td><input type="tel" class="form-control glass-input-sm" name="mother_mobile" placeholder="+91 XXXXXXXXXX" required/></td>
                 </tr>
               </tbody>
               <!-- Dynamic family rows appended here -->
@@ -223,8 +234,8 @@
           </div>
 
           <div class="row g-3 mt-2">
-            <div class="col-md-3"><label class="form-label">Number of Siblings</label><input type="number" class="form-control glass-input" name="num_siblings" placeholder="0" min="0"/></div>
-            <div class="col-md-9"><label class="form-label">Sibling Details</label><input type="text" class="form-control glass-input" name="sibling_info" placeholder="e.g. 1 brother (studying), 1 sister (working)"/></div>
+            <div class="col-md-3"><label class="form-label">Number of Siblings</label><input type="number" class="form-control glass-input" name="num_siblings" placeholder="0" min="0" required/></div>
+            <div class="col-md-9"><label class="form-label">Sibling Details</label><input type="text" class="form-control glass-input" name="sibling_info" placeholder="e.g. 1 brother (studying), 1 sister (working)" required/></div>
           </div>
 
           <div class="mt-3">
@@ -243,12 +254,12 @@
           <div class="faculty-table-wrapper">
             <table class="faculty-info-table">
               <tbody>
-                <tr><th>Faculty Name <span class="req">*</span></th><td><input type="text" class="form-control glass-input" name="faculty_name" placeholder="Full name of faculty coordinator" required/></td></tr>
-                <tr><th>Designation</th><td><input type="text" class="form-control glass-input" name="faculty_designation" placeholder="e.g. Associate Professor"/></td></tr>
-                <tr><th>Department</th><td><input type="text" class="form-control glass-input" name="faculty_department" placeholder="e.g. Department of Computer Science"/></td></tr>
-                <tr><th>Affiliation ID</th><td><input type="text" class="form-control glass-input" name="affiliation_id" placeholder="Faculty affiliation / employee ID"/></td></tr>
-                <tr><th>Email ID</th><td><input type="email" class="form-control glass-input" name="faculty_email" placeholder="faculty@college.edu"/></td></tr>
-                <tr><th>Contact Number</th><td><input type="tel" class="form-control glass-input" name="faculty_contact" placeholder="+91 XXXXXXXXXX"/></td></tr>
+                <tr><th>Faculty Name</th><td><input type="text" class="form-control glass-input" name="faculty_name" placeholder="Full name of faculty coordinator" required/></td></tr>
+                <tr><th>Designation</th><td><input type="text" class="form-control glass-input" name="faculty_designation" placeholder="e.g. Associate Professor" required/></td></tr>
+                <tr><th>Department</th><td><input type="text" class="form-control glass-input" name="faculty_department" placeholder="e.g. Department of Computer Science" required/></td></tr>
+                <tr><th>Affiliation ID</th><td><input type="text" class="form-control glass-input" name="affiliation_id" placeholder="Faculty affiliation / employee ID" required/></td></tr>
+                <tr><th>Email ID</th><td><input type="email" class="form-control glass-input" name="faculty_email" placeholder="faculty@college.edu" required/></td></tr>
+                <tr><th>Contact Number</th><td><input type="tel" class="form-control glass-input" name="faculty_contact" placeholder="+91 XXXXXXXXXX" required/></td></tr>
                 <tr><th>Fax Number <small style="font-weight:400">(Optional)</small></th><td><input type="text" class="form-control glass-input" name="faculty_fax" placeholder="Fax number (if any)"/></td></tr>
               </tbody>
             </table>
@@ -264,14 +275,14 @@
           <div class="faculty-table-wrapper">
             <table class="faculty-info-table">
               <tbody>
-                <tr><th>College Name <span class="req">*</span></th><td><input type="text" class="form-control glass-input" name="college_name" placeholder="Full name of college/institution" required/></td></tr>
-                <tr><th>Principal Name</th><td><input type="text" class="form-control glass-input" name="principal_name" placeholder="Name of Principal/Director"/></td></tr>
-                <tr><th>University Affiliation Name</th><td><input type="text" class="form-control glass-input" name="university_affiliation_name" placeholder="Affiliated university name"/></td></tr>
-                <tr><th>University Affiliation Number</th><td><input type="text" class="form-control glass-input" name="university_affiliation_no" placeholder="Affiliation number"/></td></tr>
-                <tr><th>AICTE Permanent Code</th><td><input type="text" class="form-control glass-input" name="aicte_code" placeholder="AICTE permanent code"/></td></tr>
-                <tr><th>DTE Code</th><td><input type="text" class="form-control glass-input" name="dte_code" placeholder="DTE code"/></td></tr>
-                <tr><th>College Email ID</th><td><input type="email" class="form-control glass-input" name="college_email" placeholder="info@college.edu"/></td></tr>
-                <tr><th>Contact Number</th><td><input type="tel" class="form-control glass-input" name="college_contact" placeholder="+91 XXXXXXXXXX"/></td></tr>
+                <tr><th>College Name</th><td><input type="text" class="form-control glass-input" name="college_name" placeholder="Full name of college/institution" required/></td></tr>
+                <tr><th>Principal/HOD Name</th><td><input type="text" class="form-control glass-input" name="principal_name" placeholder="Name of Principal/Director" required/></td></tr>
+                <tr><th>University Affiliation Name</th><td><input type="text" class="form-control glass-input" name="university_affiliation_name" placeholder="Affiliated university name" required/></td></tr>
+                <tr><th>University Affiliation Number</th><td><input type="text" class="form-control glass-input" name="university_affiliation_no" placeholder="Affiliation number" required/></td></tr>
+                <tr><th>AICTE Permanent Code</th><td><input type="text" class="form-control glass-input" name="aicte_code" placeholder="AICTE permanent code" required/></td></tr>
+                <tr><th>DTE Code</th><td><input type="text" class="form-control glass-input" name="dte_code" placeholder="DTE code" required/></td></tr>
+                <tr><th>College Email ID</th><td><input type="email" class="form-control glass-input" name="college_email" placeholder="info@college.edu" required/></td></tr>
+                <tr><th>Contact Number</th><td><input type="tel" class="form-control glass-input" name="college_contact" placeholder="+91 XXXXXXXXXX" required/></td></tr>
                 <tr><th>Fax Number</th><td><input type="text" class="form-control glass-input" name="college_fax" placeholder="Fax number (if any)"/></td></tr>
               </tbody>
             </table>
@@ -287,9 +298,9 @@
             <div class="col-12"><label class="form-label">Project Title</label><input type="text" class="form-control glass-input" name="project_title" placeholder="Title of your internship project"/></div>
             <div class="col-md-6"><label class="form-label">Guide / Directorate</label><input type="text" class="form-control glass-input" name="guide" placeholder="Name of guide or directorate"/></div>
             <div class="col-md-6"><label class="form-label">Area of Work</label><input type="text" class="form-control glass-input" name="area_of_work" placeholder="e.g. Avionics, AI/ML"/></div>
-            <div class="col-md-3"><label class="form-label">Duration From <span class="req">*</span></label><input type="date" class="form-control glass-input" name="duration_from" required/></div>
-            <div class="col-md-3"><label class="form-label">Duration To <span class="req">*</span></label><input type="date" class="form-control glass-input" name="duration_to" required/></div>
-            <div class="col-md-6"><label class="form-label">University Reg. No.</label><input type="text" class="form-control glass-input" name="university_reg" placeholder="Registration number"/></div>
+            <div class="col-md-3"><label class="form-label">Duration From</label><input type="date" class="form-control glass-input" name="duration_from" required/></div>
+            <div class="col-md-3"><label class="form-label">Duration To</label><input type="date" class="form-control glass-input" name="duration_to" required/></div>
+            <div class="col-md-6"><label class="form-label">University Reg. No.</label><input type="text" class="form-control glass-input" name="university_reg" placeholder="Registration number" required/></div>
           </div>
         </div>
       </div>
@@ -303,7 +314,7 @@
       
           <!-- Previous Employment -->
           <div class="card-section-header mt-1 mb-2" style="font-size:.85rem;background:var(--blue-100);color:var(--blue-700);border-radius:8px;padding:8px 14px;">
-            <i class="bi bi-building-fill-check me-2"></i>Previous Employment Details
+            <i class="bi bi-building-fill-check me-2"></i>Previous Training Details
           </div>
           <div class="faculty-table-wrapper">
             <table class="faculty-info-table">
@@ -380,7 +391,7 @@
 
           <div class="row g-4 mt-1">
             <div class="col-md-6">
-              <label class="form-label fw-semibold"><i class="bi bi-file-earmark-pdf-fill text-danger me-1"></i>Recommendation Letter <span class="req">*</span></label>
+              <label class="form-label fw-semibold"><i class="bi bi-file-earmark-pdf-fill text-danger me-1"></i>Recommendation Letter</label>
               <p class="small mb-2" style="color:var(--text-muted);">HOD/Principal Recommendation Letter addressed to Director (Admin & HR), ADA. PDF only. Max 300 KB after compression.</p>
               <div class="upload-zone" id="pdfZone" onclick="document.getElementById('rec_letter').click()">
                 <i class="bi bi-file-earmark-pdf upload-zone-icon"></i>
@@ -391,7 +402,7 @@
               <div id="pdfPreview" class="upload-preview d-none"></div>
             </div>
             <div class="col-md-6">
-              <label class="form-label fw-semibold"><i class="bi bi-person-bounding-box text-primary me-1"></i>Passport-size Photo <span class="req">*</span></label>
+              <label class="form-label fw-semibold"><i class="bi bi-person-bounding-box text-primary me-1"></i>Passport-size Photo</label>
               <p class="small mb-2" style="color:var(--text-muted);">Recent photograph with white background. JPG, JPEG or PNG. Auto-compressed to max 100 KB.</p>
               <div class="upload-zone" id="photoZone" onclick="document.getElementById('photo').click()">
                 <i class="bi bi-camera upload-zone-icon"></i>
@@ -454,7 +465,7 @@
       <!-- Nav -->
       <div class="form-nav mt-4 d-flex justify-content-between">
         <button type="button" class="btn-nav-prev" id="prevBtn" onclick="changeStep(-1)" style="visibility:hidden;"><i class="bi bi-arrow-left me-2"></i>Previous</button>
-        <span class="step-counter" id="stepCounter">Step 1 of 9</span>
+        <span class="step-counter" id="stepCounter">Step 1 of 10</span>
         <button type="button" class="btn-nav-next" id="nextBtn" onclick="changeStep(1)">Next <i class="bi bi-arrow-right ms-2"></i></button>
       </div>
     </form>
