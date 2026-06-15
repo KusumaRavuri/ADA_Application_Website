@@ -967,6 +967,13 @@ def submit():
         "aicte_code","dte_code","college_email","college_contact","college_fax",
     ]
     data = {k: f.get(k, "").strip() or None for k in fields}
+    missing = [k for k in fields if not data.get(k)]
+
+    if missing:
+        return jsonify({
+            "success": False,
+            "error": "All fields are mandatory."
+        })
     data["email"] = email
 
     # Collect ALL dynamic education add-rows (edu_level_1, edu_inst_1 … up to 20)
