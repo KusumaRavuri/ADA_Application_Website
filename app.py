@@ -1138,6 +1138,7 @@ def admin():
                     "Email":         row[20],
                     "Mobile":        row[15],
                     "Aadhaar":       row[9],
+                    "Health Issues": row[12],
                     "Duration From": row[33],
                     "Duration To":   row[34],
                     "Sub Date":      row[58],   # col 59
