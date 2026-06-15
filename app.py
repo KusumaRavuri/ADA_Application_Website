@@ -1135,12 +1135,12 @@ def admin():
                     "College":       row[5],
                     "Semester":      row[6],
                     "CGPA":          row[7],
-                    "Email":         row[20],
-                    "Mobile":        row[15],
+                    "Email":         row[21],
+                    "Mobile":        row[16],
                     "Aadhaar":       row[9],
                     "Health Issues": row[12],
-                    "Duration From": row[33],
-                    "Duration To":   row[34],
+                    "Duration From": row[34],
+                    "Duration To":   row[35],
                     "Sub Date":      row[58],   # col 59
                     "Sub Time":      row[59],   # col 60
                     "Photo File":    row[60],   # col 61
