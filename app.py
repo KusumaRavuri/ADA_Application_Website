@@ -194,23 +194,11 @@ def _add_education_headers(wb):
 def _build_excel_fresh():
     wb = openpyxl.Workbook()
     ws1 = wb.active; ws1.title = "Application"
-    # Full column layout (1-indexed):
-    #  1=SNo  2=Name  3=Qual  4=Branch  5=DOB  6=College  7=Semester  8=CGPA  9=Designation
-    # 10=Aadhaar  11=Gender  12=Marital  13=PermAddr  14=PresentAddr  15=PrevAddr
-    # 16=Mobile  17=IMEI  18=Landline  19=WhatsApp  20=Facebook  21=Email
-    # 22=LinkedIn  23=Instagram  24=OtherID
-    # 25=BankName  26=BankAcc  27=IFSC  28=PAN  29=EPF  30=ESIC
-    # 31=ProjectTitle  32=Guide  33=AreaOfWork  34=DurFrom  35=DurTo  36=UniversityReg
-    # 37=FamilyName  38=FamilyContact  39=FamilyRelation  40=FamilyAge  41=FamilyMarital  42=FamilyOccupation
-    # 43=ExamName  44=Board  45=YearPassing  46=Subject  47=Percentage
-    # 48=PrevEmp_Company  49=PrevEmp_From  50=PrevEmp_To  51=PrevEmp_Categories
-    # 52=Foreign_Name  53=Foreign_Relation  54=Foreign_Job  55=Foreign_Country  56=Foreign_Duration
-    # 57=blank
-    # 58=APPLICATION ID  59=SubDate  60=SubTime  61=PhotoFile  62=RecLetterFile  63=GenPDF
+
     row1_vals = [
         "S No","Name","Qualification B.E/B.Tech/M.E/M.Tech","Branch","DOB","College Name",
         "Semester","CGPA","DESIGNATION","AADHAAR NUMBER","GENDER",
-        "MARITAL STATUS","PERMANENT ADDRESS","PRESENT ADDRESS","PREVIOUS RESIDENTIAL ADDRESS",
+        "MARITAL STATUS","HEALTH ISSUES","PERMANENT ADDRESS","PRESENT ADDRESS","PREVIOUS RESIDENTIAL ADDRESS",
         "CONTACT NO. MOBILE NO","IMEI NO","LANDLINE NO","WHATSAPP NO.","FACEBOOK ID","E-MAIL ID",
         "LINKEDIN ID","INSTAGRAM ID","OTHER ID. (IF ANY)","BANK NAME","BANK ACCOUNT NO.","IFSC CODE",
         "PAN NO.","EPF NO / PF NO","ESIC NO","PROJECT TITLE","GUIDE / DIRECTORATE","AREA OF WORK",
@@ -270,6 +258,7 @@ def save_to_excel(data, app_id, sub_date, sub_time, photo_name, pdf_name, gen_pd
         data.get("aadhaar"),                    # 10  Aadhaar
         data.get("gender"),                     # 11  Gender
         data.get("marital_status"),             # 12  Marital Status
+        data.get("health_issues"),
         data.get("permanent_address"),          # 13  Permanent Address
         data.get("present_address"),            # 14  Present Address
         data.get("previous_address"),           # 15  Previous Address
@@ -598,6 +587,7 @@ def generate_application_pdf(data, app_id, sub_date, sub_time, photo_path, rec_p
         ("Year / Semester",data.get("btech_year")),
         ("CGPA",           data.get("btech_cgpa")),
         ("Marital Status", data.get("marital_status")),
+        ("Health Issues", data.get("health_issues")),
         ("Designation",    data.get("designation")),
     ])
 
@@ -953,7 +943,7 @@ def submit():
     fields = [
         "name","gender","dob","aadhaar","mobile","email","whatsapp","landline","imei",
         "permanent_address","present_address","previous_address",
-        "qualification","designation","marital_status",
+        "qualification","designation","marital_status","health_issues",
         "pan","epf","esic","bank_name","bank_account","ifsc",
         "facebook","linkedin","instagram","other_id",
         "project_title","guide","area_of_work","duration_from","duration_to",
