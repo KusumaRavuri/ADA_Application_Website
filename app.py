@@ -77,7 +77,7 @@ def generate_app_id():
         ws = wb[sheet]
         max_num = 0
         for row in ws.iter_rows(min_row=2, values_only=True):
-            val = row[57] if len(row) > 57 else None
+            val = row[58] if len(row) > 58 else None
             if val and str(val).startswith(f"ADA{year}"):
                 try:
                     num = int(str(val)[7:])
@@ -1123,10 +1123,9 @@ def admin():
             seen_branches = set()
             # Row 1 is the header; data starts at row 2
             for row in ws.iter_rows(min_row=2, values_only=True):
-                if not row[57]:   # APPLICATION ID (col 58, idx 57)
+                if not row[58]:   # APPLICATION ID (col 58, idx 57)
                     continue
                 a = {
-                    "App ID":        row[57],   # col 58
                     "Name":          row[1],
                     "Gender":        row[10],
                     "DOB":           row[4],
@@ -1141,11 +1140,12 @@ def admin():
                     "Health Issues": row[12],
                     "Duration From": row[34],
                     "Duration To":   row[35],
-                    "Sub Date":      row[58],   # col 59
-                    "Sub Time":      row[59],   # col 60
-                    "Photo File":    row[60],   # col 61
-                    "PDF File":      row[61],   # col 62
-                    "Gen PDF":       row[62],   # col 63
+                    "App ID":        row[58],   # was row[57]
+                    "Sub Date":      row[59],   # was row[58]
+                    "Sub Time":      row[60],   # was row[59]
+                    "Photo File":    row[61],   # was row[60]
+                    "PDF File":      row[62],   # was row[61]
+                    "Gen PDF":       row[63],
                 }
                 b = a["Branch"] or ""
                 if b and b not in seen_branches:
