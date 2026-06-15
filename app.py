@@ -910,6 +910,7 @@ def submit():
     rec_file   = request.files.get("rec_letter")
     photo_file = request.files.get("photo")
 
+
     if not rec_file or rec_file.filename == "":
         return jsonify({"success": False, "error": "Please upload the Recommendation Letter PDF."})
     if not photo_file or photo_file.filename == "":
@@ -966,14 +967,10 @@ def submit():
         "college_name","principal_name","university_affiliation_name","university_affiliation_no",
         "aicte_code","dte_code","college_email","college_contact","college_fax",
     ]
-    data = {k: f.get(k, "").strip() or None for k in fields}
-    missing = [k for k in fields if not data.get(k)]
-
-    if missing:
-        return jsonify({
-            "success": False,
-            "error": "All fields are mandatory."
-        })
+    data = {}
+    for k in request.form:
+        data[k] = request.form.get(k, "").strip()
+      
     data["email"] = email
 
     # Collect ALL dynamic education add-rows (edu_level_1, edu_inst_1 … up to 20)
