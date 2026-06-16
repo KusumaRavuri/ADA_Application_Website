@@ -228,6 +228,17 @@ function validateStep(n) {
   });
   if (!ok) { shakeCard(n); showToast("Please fill all required fields marked with *", "danger"); return false; }
 
+  if (n === 1) {
+    const formatOk = validateAllFields();
+    if (!formatOk) {
+      const firstErr = document.querySelector("#step1 .glass-input.is-invalid");
+      if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
+      shakeCard(1);
+      showToast("Please fix the highlighted field errors before continuing.", "danger");
+      return false;
+    }
+  }
+
   if (n === 8) {
     const pdf   = document.getElementById("rec_letter");
     const photo = document.getElementById("photo");
@@ -276,13 +287,9 @@ function changeStep(dir) {
   const next = currentStep+dir;
   // Inside changeStep(direction), at the very top:
   if (dir === 1 && currentStep === 1) {
-    if (!validateAllFields()) {
-      // Scroll to first error
-      const firstErr = document.querySelector(".glass-input.is-invalid");
-      if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
-      return;   // block advancing
-    }
+    validateAllFields();
   }
+  
   if (dir===1 && !validateStep(currentStep)) return;
   if (next<1||next>TOTAL_STEPS) return;
   saveFormData();
