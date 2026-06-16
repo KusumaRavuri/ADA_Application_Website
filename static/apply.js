@@ -148,10 +148,13 @@ const STEP_META = [
 ];
 
 const REQUIRED_MAP = {
-  1:["name","gender","dob","aadhaar","mobile","email","permanent_address","present_address","qualification"],
-  2:["btech_college","btech_branch"],
-  3:[],4:["faculty_name"],5:["college_name"],
-  6:["duration_from","duration_to"],
+  const REQUIRED_MAP = {
+  1:["name","gender","dob","aadhaar","mobile","email","whatsapp","permanent_address","present_address","qualification","marital_status","health_issues","designation","imei","pan","bank_name","bank_account"],
+  2:["tenth_school","tenth_board","tenth_year","tenth_percent","inter_institution","inter_board","inter_year","inter_percent","btech_college","btech_branch","btech_year","btech_cgpa"],
+  3:["father_name","father_occupation","father_mobile","mother_name","mother_occupation","mother_mobile","num_siblings","sibling_info"],
+  4:["faculty_name","faculty_designation","faculty_department","affiliation_id","faculty_email","faculty_contact"],
+  5:["college_name","principal_name","university_affiliation_name","university_affiliation_no","aicte_code","dte_code","college_email","college_contact"],
+  6:["duration_from","duration_to","university_reg"],
   7:[],   // Employment — all optional
   8:[],   // Documents — handled by file check below
   9:[],   // Declaration — handled by checkbox check below
